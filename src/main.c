@@ -1,0 +1,57 @@
+#include <SDL2/SDL.h>
+
+#include <stdbool.h>
+#include <stdio.h>
+
+#include "gameLoop.h"
+
+#define WIDTH 200
+#define HEIGHT 200
+
+int main(int argc, char** argv){
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	// Window stuff
+	SDL_Window* screen = NULL;
+	SDL_Renderer* renderer = NULL;
+	SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &screen, &renderer);
+	if(!screen) {
+		printf("Couldn't create window\n");
+	}
+	if(!renderer) {
+		printf("Couldn't create renderer\n");
+	}
+	SDL_SetWindowTitle(screen, "bruh");
+
+	// Main loop
+	bool running = true;
+	SDL_Event event;
+	gameLoop(screen, renderer);
+	/*while(running){
+		while(SDL_PollEvent(&event)){
+			switch(event.type) {
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym){
+						case SDLK_ESCAPE:
+							running = false;
+							break;
+
+						default:break;
+					}
+					break;
+
+				case SDL_QUIT:
+					running = false;
+					break;
+
+				default:break;
+			}
+		}
+	}*/
+
+	// End
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(screen);
+	SDL_Quit();
+	return 0;
+}
