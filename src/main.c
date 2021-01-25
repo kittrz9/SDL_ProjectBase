@@ -5,8 +5,8 @@
 
 #include "gameLoop.h"
 
-#define WIDTH 200
-#define HEIGHT 200
+#define WIDTH 800
+#define HEIGHT 600
 
 int main(int argc, char** argv){
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -24,30 +24,7 @@ int main(int argc, char** argv){
 	SDL_SetWindowTitle(screen, "bruh");
 
 	// Main loop
-	bool running = true;
-	SDL_Event event;
 	gameLoop(screen, renderer);
-	/*while(running){
-		while(SDL_PollEvent(&event)){
-			switch(event.type) {
-				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym){
-						case SDLK_ESCAPE:
-							running = false;
-							break;
-
-						default:break;
-					}
-					break;
-
-				case SDL_QUIT:
-					running = false;
-					break;
-
-				default:break;
-			}
-		}
-	}*/
 
 	// End
 	SDL_DestroyRenderer(renderer);

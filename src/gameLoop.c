@@ -1,13 +1,48 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include <math.h>
 
 #include "gameLoop.h"
+#include "entity.h"
+
+void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
+	ent->rect.x = ent->pos.x;
+	ent->rect.y = ent->pos.y;
+	ent->rect.w = ent->size.x;
+	ent->rect.h = ent->size.y;
+
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderDrawRect(renderer, &(ent->rect));
+}
+
+void updatePlayer(struct entity* ent, double deltaTime){
+	ent->pos.x += ent->vel.x * deltaTime;
+	ent->pos.y += ent->vel.y * deltaTime;
+
+	if(ent->pos.x < 0) {ent->pos.x = 0;}
+	if(ent->pos.y < 0) {ent->pos.y = 0;}
+	// Really need to fix these numbers here but I don't really want to right now
+	if(ent->pos.x > 800 - ent->size.x) {ent->pos.x = 800 - ent->size.x;}
+	if(ent->pos.y > 600 - ent->size.y) {ent->pos.y = 600 - ent->size.y;}
+}
 
 int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 	bool running = true;
 	SDL_Event event;
-	unsigned int frames = 0;
-	unsigned int lastTime = 0, currentTime;
+	unsigned int lastTime = 0, currentTime = SDL_GetPerformanceCounter();
+	double deltaTime = 0;
+
+	// Create player entity
+	struct entity* player = malloc(sizeof(struct entity));
+	player->pos.x = 50;
+	player->pos.y = 50;
+	player->size.x = 100;
+	player->size.y = 100;
+	player->draw = drawPlayer;
+	player->update = updatePlayer;
+	pushToEntityList(player);
+
+
 	while(running){
 		// Event handling
 		while(SDL_PollEvent(&event)){
@@ -22,6 +57,21 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 					}
 					break;
 
+				case SDL_KEYUP:
+					switch(event.key.keysym.sym){
+						case SDLK_UP:
+						case SDLK_DOWN:
+							player->vel.y = 0;
+							break;
+						case SDLK_LEFT:
+						case SDLK_RIGHT:
+							player->vel.x = 0;
+							break;
+
+						default:break;
+					}
+					break;
+
 				case SDL_QUIT:
 					running = false;
 					break;
@@ -29,22 +79,46 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 				default:break;
 			}
 		}
-		// Other stuff to do goes here lmao
-		
+		// Do stuff
+		// Check if keys are held
+		// Probably would be better to somehow combine both checking if a key is held and checking if it's pressed into the same thing but whatever
+		const Uint8* state = SDL_GetKeyboardState(NULL);
+		if(state[SDL_SCANCODE_LEFT]){
+			player->vel.x = -2;
+		}
+		if(state[SDL_SCANCODE_RIGHT]){
+			player->vel.x =  2;
+		}
+		if(state[SDL_SCANCODE_UP]){
+			player->vel.y = -2;
+		}
+		if(state[SDL_SCANCODE_DOWN]){
+			player->vel.y =  2;
+		}
 
 		// Clear the screen/renderer
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);
 		SDL_RenderClear(renderer);
-		SDL_RenderPresent(renderer);
-		frames++;
 
-		currentTime = SDL_GetTicks();
-		if(currentTime > lastTime + 1000) {
-			printf("FRAMES: %i\nTIME (milliseconds): %i\n\n", frames, currentTime);
-			frames = 0;
-			lastTime = currentTime;
+		// Draw stuff
+		for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
+			// Call the entity's draw function
+			(*entListCurrent->ent->draw)(entListCurrent->ent, renderer);
+			// Call the entity's update function
+			(*entListCurrent->ent->update)(entListCurrent->ent, deltaTime);
 		}
+
+		// Render everything to the screen
+		SDL_RenderPresent(renderer);
+
+
+		// Deltatime stuff
+		lastTime = currentTime;
+		currentTime = SDL_GetPerformanceCounter();
+
+		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
 	}
+	removeFromEntityList(player);
 
 	return 0;
 }
