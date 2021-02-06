@@ -27,12 +27,33 @@ void updatePlayer(struct entity* ent, double deltaTime){
 	if(ent->pos.y > 600 - ent->size.y) {ent->pos.y = 600 - ent->size.y;}
 }
 
+typedef struct {
+    bool held;
+    float pressedTimer; // Timer for how long the key is considered "pressed" instead of "held"
+    SDL_Keycode keycode;
+} key;
+
+// I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
 int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 	bool running = true;
 	SDL_Event event;
 	unsigned int lastTime = 0, currentTime = SDL_GetPerformanceCounter();
 	double deltaTime = 0;
 
+    // Controls stuff
+    enum CONTROLS{UP, DOWN, LEFT, RIGHT, EXIT, CONTROLS_LENGTH};
+    key keys[CONTROLS_LENGTH]; 
+    // Really need to figure out how to do like a config file or something instead of hardcoding this stuff lmao
+    keys[UP].keycode = SDLK_UP;
+    keys[DOWN].keycode = SDLK_DOWN;
+    keys[LEFT].keycode = SDLK_LEFT;
+    keys[RIGHT].keycode = SDLK_RIGHT;
+    keys[EXIT].keycode = SDLK_ESCAPE;
+    // Also I guess I need this because it isn't always just initialized to false(?)
+    for(int i = 0; i < CONTROLS_LENGTH; i++){
+        keys[i].held = false;
+    }
+    
 	// Create player entity
 	struct entity* player = malloc(sizeof(struct entity));
 	player->pos.x = 50;
@@ -43,34 +64,26 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 	player->update = updatePlayer;
 	pushToEntityList(player);
 
-
 	while(running){
 		// Event handling
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
 				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym){
-						case SDLK_ESCAPE:
-							running = false;
-							break;
-
-						default: break;
-					}
+                    for(int i = 0; i < CONTROLS_LENGTH; i++){
+                        if(event.key.keysym.sym == keys[i].keycode){
+                            keys[i].held = true;
+                            keys[i].pressedTimer = 0.1;
+                        }
+                    }
 					break;
 
 				case SDL_KEYUP:
-					switch(event.key.keysym.sym){
-						case SDLK_UP:
-						case SDLK_DOWN:
-							player->vel.y = 0;
-							break;
-						case SDLK_LEFT:
-						case SDLK_RIGHT:
-							player->vel.x = 0;
-							break;
-
-						default:break;
-					}
+                    for(int i = 0; i < CONTROLS_LENGTH; i++){
+                        if(event.key.keysym.sym == keys[i].keycode){
+                            keys[i].held = false;
+                            keys[i].pressedTimer = 0.0;
+                        }
+                    }
 					break;
 
 				case SDL_QUIT:
@@ -82,26 +95,38 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 		}
 		// Do stuff
 		// Check if keys are held
-		// Probably would be better to somehow combine both checking if a key is held and checking if it's pressed into the same thing but whatever
-		const Uint8* state = SDL_GetKeyboardState(NULL);
-		if(state[SDL_SCANCODE_LEFT]){
-			player->vel.x = -2;
-		}
-		if(state[SDL_SCANCODE_RIGHT]){
-			player->vel.x =  2;
-		}
-		if(state[SDL_SCANCODE_UP]){
-			player->vel.y = -2;
-		}
-		if(state[SDL_SCANCODE_DOWN]){
-			player->vel.y =  2;
-		}
+        if(keys[UP].held) {
+            player->vel.y = -2;
+        } else if(keys[DOWN].held) {
+            player->vel.y =  2;
+        } else {
+            player->vel.y =  0;
+        }
+        
+        if(keys[LEFT].held) {
+            player->vel.x = -2;
+        } else if(keys[RIGHT].held) {
+            player->vel.x =  2;
+        } else {
+            player->vel.x =  0;
+        }
+        
+        if(keys[EXIT].held) {
+            running = false;
+        }
+        
+        // Decrement the pressed timer for each key if they're being pressed
+        for(int i = 0; i < CONTROLS_LENGTH; i++){
+            if(keys[i].pressedTimer > 0.0) {
+                keys[i].pressedTimer -= deltaTime;
+            }
+        }
 
 		// Clear the screen/renderer
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);
 		SDL_RenderClear(renderer);
 
-		// Draw stuff
+		// Entity stuff
 		for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
 			// Call the entity's draw function
 			(*entListCurrent->ent->draw)(entListCurrent->ent, renderer);
