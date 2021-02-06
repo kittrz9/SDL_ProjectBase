@@ -6,13 +6,14 @@
 #include "entity.h"
 
 void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
-	ent->rect.x = ent->pos.x;
-	ent->rect.y = ent->pos.y;
-	ent->rect.w = ent->size.x;
-	ent->rect.h = ent->size.y;
+    SDL_Rect rect; // Maybe like unoptimal to have this always being created every time the player needs to be drawn but idk maybe the compiler will optimize it? I also feel like it's better than when I just had the SDL_Rect in the entity's struct
+	rect.x = ent->pos.x;
+	rect.y = ent->pos.y;
+	rect.w = ent->size.x;
+	rect.h = ent->size.y;
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	SDL_RenderDrawRect(renderer, &(ent->rect));
+	SDL_RenderDrawRect(renderer, &rect);
 }
 
 void updatePlayer(struct entity* ent, double deltaTime){

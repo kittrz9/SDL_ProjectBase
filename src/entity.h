@@ -9,7 +9,6 @@ typedef struct {
 
 struct entity {
 	vec2f pos, size, vel;
-	SDL_Rect rect;
 
 	void (*draw)(struct entity*, SDL_Renderer*);
 	void (*update)(struct entity*, double);
