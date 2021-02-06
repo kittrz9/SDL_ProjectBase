@@ -27,7 +27,7 @@ void pushToEntityList(struct entity* ent){
 		entListCurrent->next->prev = entListCurrent;
 		entListTail = entListCurrent->next;
 	}
-	printf("Entity %p pust to list at node %p\n", ent, entListCurrent);
+	printf("Entity %p pushed to list at node %p\n", ent, entListCurrent);
 	return;
 }
 
