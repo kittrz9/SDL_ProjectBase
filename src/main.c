@@ -1,15 +1,24 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <stdbool.h>
 #include <stdio.h>
 
 #include "gameLoop.h"
+#include "text.h"
 
 #define WIDTH 800
 #define HEIGHT 600
 
 int main(int argc, char** argv){
 	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
+	
+	font = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
+	
+	formatStr = malloc(MAX_STR_LEN);
+	
+	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_WARN);
 
 	// Window stuff
 	SDL_Window* screen = NULL;
@@ -26,7 +35,11 @@ int main(int argc, char** argv){
 	// Main loop
 	gameLoop(screen, renderer);
 
-	// End
+	// Free resources and end
+	// Quit SDL_ttf
+	TTF_CloseFont(font);
+	TTF_Quit();
+	// Quit SDL
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(screen);
 	SDL_Quit();

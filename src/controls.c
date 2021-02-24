@@ -13,5 +13,6 @@ void initControls() {
     // Also I guess I need this because it isn't always just initialized to false(?)
 	for(int i = 0; i < CONTROLS_LENGTH; i++){
 		keys[i].held = false;
+        keys[i].pressedTimer = 0.0;
 	}
 }

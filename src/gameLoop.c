@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "controls.h"
 #include "player.h"
+#include "text.h"
 
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
 int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
@@ -78,6 +79,16 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 			// Call the entity's update function
 			(*entListCurrent->ent->update)(entListCurrent->ent, deltaTime);
 		}
+		
+		// Draw the framerate counter
+		// Casting the framerate to an int to get the framerate without any decimals
+		sprintf(formatStr, "FPS: %i", (int)(1000/deltaTime));
+		SDL_Rect rect;
+		rect.x = 0;
+		rect.y = 0;
+		rect.w = 200;
+		rect.h = 50;
+		drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, rect.w, rect.h);
 
 		// Render everything to the screen
 		SDL_RenderPresent(renderer);
@@ -89,8 +100,6 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 
         // Deltatime is in milliseconds, not seconds
 		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
-        
-        printf("deltatime (milliseconds): %f, fps: %f\n", deltaTime, 1000/deltaTime);
 	}
 
 	destroyEntityList();
