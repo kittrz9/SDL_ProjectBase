@@ -3,7 +3,7 @@ SHELL = /bin/bash
 LIBS = -lSDL2 -lSDLmain -lSDL2_ttf
 CFLAGS = -Wall -O2
 NAME = SDL-thing
-SOURCES = ${wildcard src/*.c}
+SOURCES = ${wildcard src/*.c} ${wildcard src/gameStates/*.c}
 
 ${NAME}: ${SOURCES}
 	$(CC) $(CFLAGS) $(SOURCES) $(LDFLAGS) -o $@ $(LIBS)

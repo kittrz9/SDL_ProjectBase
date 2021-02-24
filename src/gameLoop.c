@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include "gameLoop.h"
+#include "gameStates.h"
 #include "entity.h"
 #include "controls.h"
 #include "player.h"
@@ -9,7 +10,6 @@
 
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
 int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
-	bool running = true;
 	SDL_Event event;
 	unsigned int lastTime = 0, currentTime = SDL_GetPerformanceCounter();
 	double deltaTime = 0;
@@ -56,7 +56,6 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 			}
 		}
 		// Do stuff
-		
 		if(keys[EXIT].held) {
 			running = false;
 		}
@@ -71,8 +70,10 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 		// Clear the screen/renderer
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);
 		SDL_RenderClear(renderer);
+		
+		if((*gameState)(screen, renderer, deltaTime)) {running = false;}
 
-		// Entity stuff
+		/*// Entity stuff
 		for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
 			// Call the entity's draw function
 			(*entListCurrent->ent->draw)(entListCurrent->ent, renderer);
@@ -88,7 +89,7 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 		rect.y = 0;
 		rect.w = 200;
 		rect.h = 50;
-		drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, rect.w, rect.h);
+		drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, rect.w, rect.h);*/
 
 		// Render everything to the screen
 		SDL_RenderPresent(renderer);
