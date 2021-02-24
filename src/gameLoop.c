@@ -1,6 +1,5 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
-#include <math.h>
 
 #include "gameLoop.h"
 #include "entity.h"
@@ -88,9 +87,13 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 		lastTime = currentTime;
 		currentTime = SDL_GetPerformanceCounter();
 
+        // Deltatime is in milliseconds, not seconds
 		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
+        
+        printf("deltatime (milliseconds): %f, fps: %f\n", deltaTime, 1000/deltaTime);
 	}
-	removeFromEntityList(player);
+
+	destroyEntityList();
 
 	return 0;
 }

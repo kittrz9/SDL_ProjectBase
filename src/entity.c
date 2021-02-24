@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+#define free(x) printf("Freeing %p\n", x); free(x); printf("Done\n");
+
 struct entListNode* entListHead    = NULL;
 struct entListNode* entListCurrent = NULL;
 struct entListNode* entListTail    = NULL;
@@ -32,18 +34,39 @@ void pushToEntityList(struct entity* ent){
 }
 
 void removeFromEntityList(struct entity* ent){
+	struct entListNode* temp;
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
+		// Check if there's only one entity left in the list
+		if(entListHead == entListTail){
+			free(entListHead);
+			return;
+		}
 		if(entListCurrent->ent == ent){
-			printf("Freeing entity at %p\n", entListCurrent->ent);
-			if(entListHead != entListTail){
-				entListCurrent->prev->next = entListCurrent->next;
+			temp = entListCurrent->next;
+			if(entListCurrent == entListHead){
+				entListHead = entListHead->next;
 			}
-			free(entListCurrent->ent);
+			if(entListCurrent == entListTail){
+				entListTail = entListTail->prev;
+			}
 			free(entListCurrent);
-			printf("Done\n");
+			entListCurrent = temp;
 			return;
 		}
 	}
-	printf("Couldn't find entity %p\n", ent);
+	printf("Could not find entity at %p\n", ent);
+}
+
+void destroyEntityList(){
+	struct entListNode* temp;
+	for(entListCurrent = entListHead; entListCurrent != NULL;){
+		if(entListHead == entListTail){
+			free(entListHead);
+			return;
+		}
+		temp = entListCurrent->next;
+		free(entListCurrent);
+		entListCurrent = temp;
+	}
 	return;
 }
