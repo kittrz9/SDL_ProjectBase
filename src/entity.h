@@ -3,9 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-typedef struct {
-	float x, y;
-} vec2f;
+#include "types.h"
 
 struct entity {
 	vec2f pos, size, vel;
