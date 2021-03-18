@@ -11,7 +11,8 @@
 #define HEIGHT 600
 
 int main(int argc, char** argv){
-	SDL_Init(SDL_INIT_EVERYTHING);
+// 	SDL_Init(SDL_INIT_EVERYTHING);
+ 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
 	TTF_Init();
 	
 	font = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
