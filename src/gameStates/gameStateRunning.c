@@ -19,7 +19,7 @@ int runGameStateRunning(SDL_Window* screen, SDL_Renderer* renderer, float deltaT
 	rect.y = 0;
 	rect.w = 200;
 	rect.h = 50;
-	drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, rect.w, rect.h);
+	drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, 2.0f);
 	
 	return 0;
 }

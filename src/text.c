@@ -8,8 +8,7 @@ TTF_Font* font;
 char* formatStr;
 
 // Should probably optimize this or something
-// Also get it to have the width be based on how long the text is when drawn with TTF_SizeText
-void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, int w, int h){
+void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, float scaling){
 	// This is probably what's making this really inneficient
 	// There's probably a better way to draw text than just constantly creating surfaces and textures every frame
 	// But I'm too stupid to figure this out
@@ -20,8 +19,10 @@ void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, in
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 	
 	SDL_Rect rect;
-	rect.w = w;
-	rect.h = h;
+	TTF_SizeText(font, str, &rect.w, &rect.h);
+	rect.w *= scaling;
+	rect.h *= scaling;
+	
 	rect.x = x;
 	rect.y = y;
 	
