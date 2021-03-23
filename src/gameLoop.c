@@ -17,14 +17,7 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 	initControls();
     
 	// Create player entity
-	struct entity* player = malloc(sizeof(struct entity));
-	player->pos.x = 50;
-	player->pos.y = 50;
-	player->size.x = 100;
-	player->size.y = 100;
-	player->draw = drawPlayer;
-	player->update = updatePlayer;
-	pushToEntityList(player);
+	createPlayer(50, 50, 100, 100);
 
 	while(running){
 		// Event handling
