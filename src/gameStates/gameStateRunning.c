@@ -3,7 +3,7 @@
 #include "../text.h"
 #include "../entity.h"
 
-int runGameStateRunning(SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
+int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
 		// Call the entity's draw function
 		(*entListCurrent->ent->draw)(entListCurrent->ent, renderer);

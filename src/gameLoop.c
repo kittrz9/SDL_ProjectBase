@@ -9,7 +9,7 @@
 #include "text.h"
 
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
-int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
+int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	SDL_Event event;
 	unsigned int lastTime = 0, currentTime = SDL_GetPerformanceCounter();
 	double deltaTime = 0;
@@ -17,12 +17,14 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 	initControls();
     
 	// Create player entity
+	// Returns a pointer to the player but does nothing with it lmao
 	createPlayer(50, 50, 100, 100);
 
 	while(running){
 		// Event handling
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
+				// Check if the key that has either been pressed or released corresponds to any of the controls that have been set up
 				case SDL_KEYDOWN:
 					for(int i = 0; i < CONTROLS_LENGTH; i++){
 						if(event.key.keysym.sym == keys[i].keycode){
@@ -48,7 +50,8 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 				default:break;
 			}
 		}
-		// Do stuff
+		
+		// Could/should probably be moved to the gamestates in case there's points where you wouldn't want to be able to just like accidentally press the exit key (Like when saving or something idk)
 		if(keys[EXIT].held) {
 			running = false;
 		}
@@ -64,6 +67,7 @@ int gameLoop(SDL_Window* screen, SDL_Renderer* renderer) {
 		SDL_SetRenderDrawColor(renderer,0,0,0,255);
 		SDL_RenderClear(renderer);
 		
+		// Run the current game state
 		if((*gameState)(screen, renderer, deltaTime)) {running = false;}
 
 		// Render everything to the screen

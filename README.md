@@ -5,15 +5,24 @@ Pretty much the same thing as the CSFML project base but in SDL (This time mainl
 
 ---
 
+# Compiling
+I think the only thing you really need is SDL 2 to compile it.<br>
+It should work by just doing `make` in the command line since it's not a really complex project lmao<br>
+`make debug` includes debug stuff for stuff like gdb<br>
+
+---
+
 # Todo:
 
 `Audio stuff`<br>
 `Optimize stuff`<br>
-`Organize stuff better`<br>
+`Make the makefile not garbage`<br>
+`Move stuff like headers into an include directory`<br>
+`Seperate the game specific stuff like the player stuff from the engine stuff`<br>
 `Add a config file thing (Probably with like XML or something)`<br>
 `Multithreading?`<br>
 `More types in types.h`<br>
 `Maybe start using CMake?`<br>
 `Controller support`<br>
-`Sort of polymorphism for entities (Probably with a void pointer to a struct or something but idk)`<br>
 `Animation system or something`<br>
+`Maybe just move to just regular OpenGL lmao`<br>

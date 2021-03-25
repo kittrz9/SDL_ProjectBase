@@ -5,8 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #define MAX_STR_LEN 256 // This is probably dumb since I can just realloc but whatever
-
-static const SDL_Color SDL_Color_White = {255, 255, 255}; // This is dumb
+static const SDL_Color SDL_Color_White = {255, 255, 255, 255}; // RGBA format
 
 extern char* formatStr; // This is very dumb
 

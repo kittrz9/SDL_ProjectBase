@@ -2,7 +2,11 @@
 
 #include <SDL2/SDL.h>
 
-#define free(x) printf("Freeing %p\n", x); free(x); printf("Done\n");
+// Printf needs the pointer to be a void* to not get a warning with the -Wall option
+#define free(x) printf("Freeing %p\n", (void*)x); free(x); printf("Done\n");
+
+// For stuff that either doesn't need to be drawn or updated I guess
+void entityNOP(void){return;}
 
 struct entListNode* entListHead    = NULL;
 struct entListNode* entListCurrent = NULL;
@@ -20,7 +24,7 @@ void pushToEntityList(struct entity* ent){
 		entListHead->next = NULL;
 		entListTail->prev = NULL;
 	} else {
-		printf("Pushing entity at %p to list\n", ent);
+		printf("Pushing entity at %p to list\n", (void*)ent);
 
 		entListCurrent = entListTail;
 		entListCurrent->next = (struct entListNode*) malloc(sizeof(struct entListNode));
@@ -29,7 +33,7 @@ void pushToEntityList(struct entity* ent){
 		entListCurrent->next->prev = entListCurrent;
 		entListTail = entListCurrent->next;
 	}
-	printf("Entity %p pushed to list at node %p\n", ent, entListCurrent);
+	printf("Entity %p pushed to list at node %p\n", (void*)ent, (void*)entListCurrent);
 	return;
 }
 
@@ -54,7 +58,7 @@ void removeFromEntityList(struct entity* ent){
 			return;
 		}
 	}
-	printf("Could not find entity at %p\n", ent);
+	printf("Could not find entity at %p\n", (void*)ent);
 }
 
 void destroyEntityList(){

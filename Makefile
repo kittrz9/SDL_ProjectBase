@@ -1,7 +1,7 @@
 CC = gcc
 SHELL = /bin/bash
 LIBS = -lSDL2 -lSDLmain -lSDL2_ttf
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -Wpedantic -Wextra -O2 
 NAME = SDL-thing
 SOURCES = ${wildcard src/*.c} ${wildcard src/gameStates/*.c}
 OBJS = ${subst src/, obj/, ${subst .c,.o,${SOURCES}}}
@@ -25,4 +25,4 @@ clean:
 	# Probably not good to constantly try to create the folders for the object files 
 	# Probably should just add those folders to the repository
 	mkdir -p obj/gameStates
-	${CC} ${CFLASGS} ${LIBS} -c ${subst obj/,src/,$*.c} -o ${subst src/,obj/,$*.o}
+	${CC} ${CFLAGS} ${LIBS} -c ${subst obj/,src/,$*.c} -o ${subst src/,obj/,$*.o}
