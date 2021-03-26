@@ -18,7 +18,6 @@ It should work by just doing `make` in the command line since it's not a really 
 `Optimize stuff`<br>
 `Make the makefile not garbage`<br>
 `Move stuff like headers into an include directory`<br>
-`Seperate the game specific stuff like the player stuff from the engine stuff`<br>
 `Add a config file thing (Probably with like XML or something)`<br>
 `Multithreading?`<br>
 `More types in types.h`<br>

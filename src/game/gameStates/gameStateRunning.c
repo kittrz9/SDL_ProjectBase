@@ -1,7 +1,7 @@
 #include "gameStateRunning.h"
 
-#include "../text.h"
-#include "../entity.h"
+#include "text.h"
+#include "entity.h"
 
 int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
