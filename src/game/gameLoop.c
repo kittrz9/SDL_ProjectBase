@@ -19,7 +19,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao
 	createPlayer(50, 50, 100, 100);
-
+	
 	while(running){
 		// Event handling
 		while(SDL_PollEvent(&event)){
@@ -73,13 +73,16 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 		// Render everything to the screen
 		SDL_RenderPresent(renderer);
 
-
 		// Deltatime stuff
 		lastTime = currentTime;
 		currentTime = SDL_GetPerformanceCounter();
 
 		// Deltatime is in milliseconds, not seconds
-		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
+		deltaTime = (double)(((currentTime - lastTime)*1000) / (double)SDL_GetPerformanceFrequency());
+		// I think there's something wrong with how I'm calculating the delta time since when the framerate is really low and deltatime should be really high it says it's something like 4 milliseconds
+		printf("%f\n", deltaTime);
+		
+		
 	}
 
 	destroyEntityList();

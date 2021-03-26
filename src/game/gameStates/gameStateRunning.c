@@ -13,7 +13,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	// Draw the framerate counter
 	// Casting the framerate to an int to get the framerate without any decimals
-	sprintf(formatStr, "FPS: %i", (int)(1000/deltaTime));
+	sprintf(formatStr, "FPS: %.5f", 1/(deltaTime * 0.001));
 	SDL_Rect rect;
 	rect.x = 0;
 	rect.y = 0;

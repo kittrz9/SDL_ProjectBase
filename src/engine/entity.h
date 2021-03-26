@@ -35,7 +35,7 @@ extern struct entListNode* entListCurrent;
 extern struct entListNode* entListTail;
 
 void pushToEntityList(struct entity* ent);
-void removeFromEntityList(struct entity* ent);
+void removeEntity(struct entity* ent);
 void destroyEntityList();
 
 #endif

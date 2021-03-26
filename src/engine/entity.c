@@ -13,52 +13,68 @@ struct entListNode* entListCurrent = NULL;
 struct entListNode* entListTail    = NULL;
 
 void pushToEntityList(struct entity* ent){
-	if(!entListHead){
+	if(entListHead == NULL){
 		printf("Initializing entity list\n");
-
 		entListHead = (struct entListNode*) malloc(sizeof(struct entity));
 		entListTail = entListHead;
 		entListCurrent = entListHead;
-
-		entListHead->ent = ent;
-		entListHead->next = NULL;
-		entListTail->prev = NULL;
+		entListCurrent->prev = NULL;
 	} else {
-		printf("Pushing entity at %p to list\n", (void*)ent);
-
+		// Creates new entity at the end of the entity list
+		entListTail->next = malloc(sizeof(struct entity));
+		entListTail->next->prev = entListTail;
+		entListTail = entListTail->next;
 		entListCurrent = entListTail;
-		entListCurrent->next = (struct entListNode*) malloc(sizeof(struct entListNode));
-		entListCurrent->next->ent = ent;
-		entListCurrent->next->next = NULL;
-		entListCurrent->next->prev = entListCurrent;
-		entListTail = entListCurrent->next;
 	}
+	entListCurrent->ent = ent;
+	entListCurrent->next = NULL;
 	printf("Entity %p pushed to list at node %p\n", (void*)ent, (void*)entListCurrent);
 	return;
 }
 
-void removeFromEntityList(struct entity* ent){
-	struct entListNode* temp;
+void removeEntity(struct entity* ent){
+	if(entListHead == NULL){
+		printf("Entity list is empty\n");
+		return;
+	}
+	
+	// If there is only one entity in the list
+	if(entListHead == entListTail){
+		free(entListHead);
+		entListHead = NULL;
+		entListTail = NULL;
+		entListCurrent = NULL;
+		return;
+	}
+	
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
-		// Check if there's only one entity left in the list
-		if(entListHead == entListTail){
-			free(entListHead);
-			return;
-		}
 		if(entListCurrent->ent == ent){
-			temp = entListCurrent->next;
+			struct entListNode* temp;
+			// Handling the entities at the ends of the list specifically because they're weird
+			// Could probably do something much better than this but whatever
 			if(entListCurrent == entListHead){
-				entListHead = entListHead->next;
+				entListHead->next->prev = NULL;
+				temp = entListHead->next;
+				free(entListHead);
+				entListHead = temp;
+				return;
 			}
 			if(entListCurrent == entListTail){
-				entListTail = entListTail->prev;
+				entListHead->prev->next = NULL;
+				temp = entListTail->prev;
+				free(entListTail);
+				entListTail = temp;
+				return;
 			}
+			
+			entListCurrent->prev->next = entListCurrent->next;
+			entListCurrent->next->prev = entListCurrent->prev;
 			free(entListCurrent);
-			entListCurrent = temp;
 			return;
 		}
 	}
-	printf("Could not find entity at %p\n", (void*)ent);
+	printf("Could not find entity at %p in the entity list\n", (void*)ent);
+	return;
 }
 
 void destroyEntityList(){
