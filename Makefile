@@ -28,5 +28,4 @@ clean:
 	if ! [ -d obj/game/gameStates ] || ! [ -d obj/engine ]; then \
 		mkdir -p obj/game/gameStates obj/engine; \
 	fi
-	mkdir -p obj/gameStates
 	${CC} ${CFLAGS} ${LIBS} ${INCLUDE} -c ${subst obj/,src/,$*.c} -o ${subst src/,obj/,$*.o}
