@@ -10,6 +10,7 @@ void initControls() {
 	keys[LEFT].keycode = SDLK_LEFT;
 	keys[RIGHT].keycode = SDLK_RIGHT;
 	keys[EXIT].keycode = SDLK_ESCAPE;
+	keys[PLAY_SOUND].keycode = SDLK_SPACE;
 	// Also I guess I need this because it isn't always just initialized to false(?)
 	for(int i = 0; i < CONTROLS_LENGTH; i++){
 		keys[i].held = false;

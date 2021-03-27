@@ -1,6 +1,6 @@
 CC = gcc
 SHELL = /bin/bash
-LIBS = -lSDL2 -lSDLmain -lSDL2_ttf
+LIBS = -lSDL2 -lSDLmain -lSDL2_ttf -lSDL2_mixer
 CFLAGS = -Wall -Wpedantic -Wextra -O2 
 INCLUDE = -Isrc/game -Isrc/game/gameStates -Isrc/engine
 NAME = SDL-thing

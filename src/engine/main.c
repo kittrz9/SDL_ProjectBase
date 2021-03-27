@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -7,18 +8,26 @@
 #include "gameLoop.h"
 #include "text.h"
 #include "types.h"
+#include "audio.h"
 
 // Should probably be moved away from main.c since other things need to use the screen size
 #define WIDTH 800
 #define HEIGHT 600
 
 int main(UNUSED int argc, UNUSED char** argv){
-// 	SDL_Init(SDL_INIT_EVERYTHING);
- 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) < 0) {
+	// Could probably make these either a function or macro to check if each of these inits failed
+ 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SDL_Init failed: %s\n", SDL_GetError());
 		return 1;
 	}
-	TTF_Init();
+	if(TTF_Init() < 0){
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "TTF_Init failed: %s\n", SDL_GetError());
+		return 1;
+	}
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, AUDIO_CHANNELS_AMOUNT, 2048) < 0){
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Mix_OpenAudio failed: %s\n", SDL_GetError());
+		return 1;
+	}
 	
 	// Probably shouldn't be hardcoded to check for this specific font
 	font = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
@@ -54,6 +63,8 @@ int main(UNUSED int argc, UNUSED char** argv){
 	// Quit SDL_ttf
 	TTF_CloseFont(font);
 	TTF_Quit();
+	// Quit SDL_mixer
+	Mix_CloseAudio();
 	// Quit SDL
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(screen);

@@ -10,7 +10,7 @@ typedef struct {
 	SDL_Keycode keycode;
 } key;
 
-enum CONTROLS{UP, DOWN, LEFT, RIGHT, EXIT, CONTROLS_LENGTH};
+enum CONTROLS{UP, DOWN, LEFT, RIGHT, PLAY_SOUND, EXIT, CONTROLS_LENGTH};
 extern key keys[CONTROLS_LENGTH]; 
 
 void initControls();

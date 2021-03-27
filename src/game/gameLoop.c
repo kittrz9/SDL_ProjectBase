@@ -7,6 +7,7 @@
 #include "controls.h"
 #include "player.h"
 #include "text.h"
+#include "audio.h"
 
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
 int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
@@ -15,6 +16,9 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	double deltaTime = 0;
 
 	initControls();
+	
+	// Should probably change this from just a basic sine wave but it's just for testing so whatever
+	loadSound(SOUND_TEST, SDL_RWFromFile("res/sounds/test.mp3", "rb"));
     
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao
@@ -29,7 +33,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 					for(int i = 0; i < CONTROLS_LENGTH; i++){
 						if(event.key.keysym.sym == keys[i].keycode){
 							keys[i].held = true;
-							keys[i].pressedTimer = 0.1;
+							keys[i].pressedTimer = 1.0;
 						}
 					}
 					break;
@@ -78,11 +82,9 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 		currentTime = SDL_GetPerformanceCounter();
 
 		// Deltatime is in milliseconds, not seconds
-		deltaTime = (double)(((currentTime - lastTime)*1000) / (double)SDL_GetPerformanceFrequency());
+		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
 		// I think there's something wrong with how I'm calculating the delta time since when the framerate is really low and deltatime should be really high it says it's something like 4 milliseconds
-		printf("%f\n", deltaTime);
-		
-		
+		//printf("%f\n", deltaTime);
 	}
 
 	destroyEntityList();
