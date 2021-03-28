@@ -25,9 +25,5 @@ void playSound(enum SOUND_ID sound, int loops){
 		}
 	}
 	
-	/*if(Mix_Playing(channel) == 0){
-		Mix_PlayChannel(-1, sounds[sound], loops);
-	}*/
-	
 	return;
 }

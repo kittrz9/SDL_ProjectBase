@@ -19,10 +19,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	// Draw the framerate counter
 	sprintf(formatStr, "FPS: %.5f", 1/(deltaTime * 0.001));
-	SDL_Rect rect;
-	rect.x = 0;
-	rect.y = 0;
-	drawText(renderer, formatStr, SDL_Color_White, rect.x, rect.y, 2.0f);
+	drawText(renderer, formatStr, SDL_Color_White, 0, 0, 2.0f);
 	
 	return 0;
 }
