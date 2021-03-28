@@ -33,7 +33,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 					for(int i = 0; i < CONTROLS_LENGTH; i++){
 						if(event.key.keysym.sym == keys[i].keycode){
 							keys[i].held = true;
-							keys[i].pressedTimer = 1.0;
+							keys[i].pressedTimer = 0.2;
 						}
 					}
 					break;

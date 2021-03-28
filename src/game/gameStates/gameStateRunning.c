@@ -14,7 +14,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	}
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
-		playSound(SOUND_TEST, -1, 0);
+		playSound(SOUND_TEST, 0);
 	}
 	
 	// Draw the framerate counter

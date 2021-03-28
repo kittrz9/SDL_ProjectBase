@@ -17,10 +17,17 @@ void loadSound(enum SOUND_ID sound, SDL_RWops* rw){
 	return;
 }
 
-void playSound(enum SOUND_ID sound, int channel, int loops){
-	if(Mix_Playing(channel) == 0){
-		Mix_PlayChannel(-1, sounds[sound], loops);
+void playSound(enum SOUND_ID sound, int loops){
+	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
+		if(Mix_Playing(i) == 0){
+			Mix_PlayChannel(i, sounds[sound], loops);
+			break;
+		}
 	}
+	
+	/*if(Mix_Playing(channel) == 0){
+		Mix_PlayChannel(-1, sounds[sound], loops);
+	}*/
 	
 	return;
 }

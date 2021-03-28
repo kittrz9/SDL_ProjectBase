@@ -14,20 +14,16 @@
 #define WIDTH 800
 #define HEIGHT 600
 
+#define init(x) if(x < 0) {\
+			printf(#x " failed: %s\n", SDL_GetError());\
+			return 1;\
+		}
+
+// argc and argv are unused for now but might eventually use them later idk
 int main(UNUSED int argc, UNUSED char** argv){
-	// Could probably make these either a function or macro to check if each of these inits failed
- 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "SDL_Init failed: %s\n", SDL_GetError());
-		return 1;
-	}
-	if(TTF_Init() < 0){
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "TTF_Init failed: %s\n", SDL_GetError());
-		return 1;
-	}
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, AUDIO_CHANNELS_AMOUNT, 2048) < 0){
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Mix_OpenAudio failed: %s\n", SDL_GetError());
-		return 1;
-	}
+	init(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO));
+	init(TTF_Init());
+	init(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, AUDIO_CHANNELS_AMOUNT, 2048));
 	
 	// Probably shouldn't be hardcoded to check for this specific font
 	font = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
@@ -71,3 +67,4 @@ int main(UNUSED int argc, UNUSED char** argv){
 	SDL_Quit();
 	return 0;
 }
+
