@@ -12,12 +12,12 @@
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
 int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	SDL_Event event;
-	unsigned int lastTime = 0, currentTime = SDL_GetPerformanceCounter();
+	Uint64 lastTime = SDL_GetPerformanceCounter(), currentTime;
 	double deltaTime = 0;
 
 	initControls();
 	
-	// Should probably change this from just a basic sine wave but it's just for testing so whatever
+	// bruh sound effect #2
 	loadSound(SOUND_TEST, SDL_RWFromFile("res/sounds/test.mp3", "rb"));
     
 	// Create player entity
@@ -78,13 +78,11 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 		SDL_RenderPresent(renderer);
 
 		// Deltatime stuff
-		lastTime = currentTime;
-		currentTime = SDL_GetPerformanceCounter();
-
-		// Deltatime is in milliseconds, not seconds
-		deltaTime = (double)((currentTime - lastTime)*1000 / (double)SDL_GetPerformanceFrequency());
-		// I think there's something wrong with how I'm calculating the delta time since when the framerate is really low and deltatime should be really high it says it's something like 4 milliseconds
-		//printf("%f\n", deltaTime);
+		currentTime = SDL_GetPerformanceCounter() - lastTime;
+		lastTime = SDL_GetPerformanceCounter();
+		
+		// Delta time is in milliseconds, not seconds
+		deltaTime = (double)((currentTime*1000.0f) / (double)SDL_GetPerformanceFrequency());
 	}
 
 	destroyEntityList();

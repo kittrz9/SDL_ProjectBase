@@ -3,8 +3,6 @@
 
 #include <SDL2/SDL_mixer.h>
 
-#include <stdbool.h>
-
 #define AUDIO_CHANNELS_AMOUNT 8
 
 enum SOUND_ID{ SOUND_TEST, SOUNDS_LENGTH };
