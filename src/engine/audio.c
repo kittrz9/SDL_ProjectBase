@@ -30,7 +30,6 @@ void playSound(enum SOUND_ID sound, int loops){
 	return;
 }
 
-#define PI 3.141592653589
 #define PI2 6.28318530718
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
@@ -42,10 +41,16 @@ Mix_Chunk* sineWaveSound(float freq, float length){
 	
 	printf("%f\n", freq);
 	
-	Uint8* audioBuffer = malloc(size * sizeof(Uint8));
+	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
+	
+	// Really jank way of getting 2^(size/2) since the pow function returns a double instead of an int
+	int offset = 1;
+	for(size_t i = 1; i < sizeof(audioBuffer[0])*8; i++){
+		offset *= 2;
+	}
 	
 	for(size_t i = 0; i < size; i++){
-		audioBuffer[i] = (Uint8)((128 * sin(time)) + 128);
+		audioBuffer[i] = (Uint16)((offset*sin(time))+offset);
 		
 		// Frequency also has to be divided by 8 for some reason to get the actual frequency, idk why
 		time += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;
@@ -54,7 +59,7 @@ Mix_Chunk* sineWaveSound(float freq, float length){
 	
 	Mix_Chunk* chunk = malloc(sizeof(Mix_Chunk));
 	chunk->allocated = 1;
-	chunk->abuf = audioBuffer;
+	chunk->abuf = (Uint8*)audioBuffer;
 	chunk->alen = size;
 	chunk->volume = 16;
 	
