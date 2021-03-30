@@ -26,6 +26,14 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	createPlayer(50, 50, 100, 100);
 	
 	while(running){
+		// Decrement the pressed timer for each key if they're being pressed
+		// Had to be moved before checking if a key is pressed so it doesn't instantly become not pressed if the delta time is too large
+		for(int i = 0; i < CONTROLS_LENGTH; i++){
+			if(keys[i].pressedTimer > 0.0) {
+				keys[i].pressedTimer -= deltaTime;
+			}
+		}
+		
 		// Event handling
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
@@ -34,7 +42,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 					for(int i = 0; i < CONTROLS_LENGTH; i++){
 						if(event.key.keysym.sym == keys[i].keycode){
 							keys[i].held = true;
-							keys[i].pressedTimer = 0.2;
+							keys[i].pressedTimer = 0.1f;
 						}
 					}
 					break;
@@ -59,13 +67,6 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 		// Could/should probably be moved to the gamestates in case there's points where you wouldn't want to be able to just like accidentally press the exit key (Like when saving or something idk)
 		if(keys[EXIT].held) {
 			running = false;
-		}
-        
-		// Decrement the pressed timer for each key if they're being pressed
-		for(int i = 0; i < CONTROLS_LENGTH; i++){
-			if(keys[i].pressedTimer > 0.0) {
-				keys[i].pressedTimer -= deltaTime;
-			}
 		}
 
 		// Clear the screen/renderer
