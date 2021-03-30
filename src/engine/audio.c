@@ -40,7 +40,8 @@ void playSound(enum SOUND_ID sound, int loops){
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
 Mix_Chunk* createSound(float freq, float length, synthFunc synth){
-	size_t size = length * MIX_DEFAULT_FREQUENCY*8;
+	// Has to be multiplied by 16 because the audio format is U16 I think
+	size_t size = length * MIX_DEFAULT_FREQUENCY*16;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
 	
 	float time = 0;

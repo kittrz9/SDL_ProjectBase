@@ -16,7 +16,6 @@ It should work by just doing `make` in the command line since it's not a really 
 
 `Add music playing`<br>
 `Make audio playing not garbage`<br>
-`Fix the length stuff in the audio synthesis`<br>
 `Optimize stuff`<br>
 `Make the makefile not garbage`<br>
 `Move stuff like headers into an include directory`<br>

@@ -29,7 +29,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 				synthIndex = 0;
 			}
 		}
-		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 1.0f, synths[synthIndex]);
+		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 0.2f, synths[synthIndex]);
 	}
 	
 	// Draw the framerate counter
