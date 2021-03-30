@@ -19,8 +19,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
 		playSound(SOUND_TEST, 0);
-		//sounds[SOUND_TEST] = sineWaveSound(cMajorScale[scaleIndex], 1.0f);
-		sounds[SOUND_TEST] = squareWaveSound(cMajorScale[scaleIndex], 1.0f);
+		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 1.0f, synthSquare);
 		scaleIndex++;
 		if(scaleIndex > sizeof(cMajorScale)/sizeof(float) - 1) {scaleIndex = 0;}
 	}
