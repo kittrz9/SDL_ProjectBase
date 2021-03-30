@@ -4,13 +4,9 @@
 #include <SDL2/SDL_mixer.h>
 
 #include "types.h"
+#include "sounds.h"
 
 #define AUDIO_CHANNELS_AMOUNT 8
-
-// Should probably move this enum to like something in the game directory or whatever
-enum SOUND_ID{ SOUND_TEST, SOUNDS_LENGTH };
-
-extern Mix_Chunk* sounds[SOUNDS_LENGTH];
 
 // Loading from SDL_RWops in case I want to like read from something in RAM or something from like uncompressing something idk
 // Should probably just use audio synthesis or something instead of samples so it's easier to do stuff like pitch them and manipulate the audio or whatever
