@@ -5,6 +5,7 @@
 #include "audio.h"
 #include "controls.h"
 
+// Could probably change this to an enum
 float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
 Uint8 scaleIndex = 0;
 
@@ -18,7 +19,8 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
 		playSound(SOUND_TEST, 0);
-		sounds[SOUND_TEST] = sineWaveSound(cMajorScale[scaleIndex], 1.0f);
+		//sounds[SOUND_TEST] = sineWaveSound(cMajorScale[scaleIndex], 1.0f);
+		sounds[SOUND_TEST] = squareWaveSound(cMajorScale[scaleIndex], 1.0f);
 		scaleIndex++;
 		if(scaleIndex > sizeof(cMajorScale)/sizeof(float) - 1) {scaleIndex = 0;}
 	}

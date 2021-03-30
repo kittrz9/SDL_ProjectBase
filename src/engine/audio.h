@@ -15,6 +15,7 @@ void loadSound(enum SOUND_ID sound, SDL_RWops* rw);
 void playSound(enum SOUND_ID sound, int loops);
 
 Mix_Chunk* sineWaveSound(float freq, float length);
+Mix_Chunk* squareWaveSound(float freq, float length);
 
 // Could probably have music be played using samples but idk
 // I'd have to either seperate the sound and music channels or increase the number of channels
