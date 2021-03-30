@@ -1,8 +1,10 @@
 #include "audio.h"
 
 #include <SDL2/SDL.h>
+#include <types.h>
 
 #include <math.h>
+#include <stdlib.h>
 
 Mix_Chunk* sounds[SOUNDS_LENGTH];
 
@@ -65,4 +67,17 @@ synthFunc synthSine(float time){
 
 synthFunc synthSquare(float time){
 	return (Uint16)(time < PI ? 0 : OFFSET);
+}
+
+// Should probably find a way to make this change the pitch depending on the time
+synthFunc synthNoise(UNUSED float time){
+	return (Uint16)(rand());
+}
+
+synthFunc synthSaw(float time){
+	return (Uint16)(OFFSET - ((time/PI2)*OFFSET));
+}
+
+synthFunc synthTriangle(float time){
+	return (Uint16)((time < PI ? ((time/PI2)*OFFSET) : (OFFSET - (time/PI2)) ));
 }

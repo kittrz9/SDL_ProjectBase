@@ -8,6 +8,8 @@
 // Could probably change this to an enum
 float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
 Uint8 scaleIndex = 0;
+synthFunc synths[] = { synthSine, synthSquare, synthSaw, synthTriangle, synthNoise };
+Uint8 synthIndex = 0;
 
 int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
@@ -19,9 +21,15 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
 		playSound(SOUND_TEST, 0);
-		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 1.0f, synthSquare);
 		scaleIndex++;
-		if(scaleIndex > sizeof(cMajorScale)/sizeof(float) - 1) {scaleIndex = 0;}
+		if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
+			scaleIndex = 0; 
+			synthIndex++;
+			if(synthIndex >= sizeof(synths)/sizeof(synthFunc)) {
+				synthIndex = 0;
+			}
+		}
+		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 1.0f, synths[synthIndex]);
 	}
 	
 	// Draw the framerate counter
