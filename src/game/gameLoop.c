@@ -19,7 +19,10 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	
 	// bruh sound effect #2
 	//loadSound(SOUND_TEST, SDL_RWFromFile("res/sounds/test.mp3", "rb"));
-	sounds[SOUND_TEST] = createSound(261.6256, 0.2f, synthSine);
+	synthData data;
+	data.startFreq = 261.6256;
+	data.endFreq = 440.0;
+	sounds[SOUND_TEST] = createSound(0.2f, synthSine, data);
     
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao

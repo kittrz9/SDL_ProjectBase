@@ -39,15 +39,17 @@ void playSound(enum SOUND_ID sound, int loops){
 #define OFFSET 32768
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
-Mix_Chunk* createSound(float freq, float length, synthFunc synth){
+Mix_Chunk* createSound(float length, synthFunc synth, synthData data){
 	// Has to be multiplied by 16 because the audio format is U16 I think
 	size_t size = length * MIX_DEFAULT_FREQUENCY*16;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
 	
-	float time = 0;
+	float time = 0, freq = data.startFreq;
 	
 	for(size_t i = 0; i < size; i++){
 		audioBuffer[i] = synth(time);
+		
+		freq += (data.endFreq - data.startFreq)/size;
 		
 		// Frequency also has to be divided by 8 for some reason to get the actual frequency, idk why
 		time += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;

@@ -29,7 +29,11 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 				synthIndex = 0;
 			}
 		}
-		sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 0.2f, synths[synthIndex]);
+		synthData data;
+		data.startFreq = cMajorScale[scaleIndex];
+		data.endFreq = cMajorScale[(scaleIndex+1 >= sizeof(cMajorScale)/sizeof(float) ? 0 : scaleIndex+1)];
+		sounds[SOUND_TEST] = createSound(0.2f, synthSine, data);
+		//sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 0.2f, synths[synthIndex]);
 	}
 	
 	// Draw the framerate counter
