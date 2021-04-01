@@ -6,9 +6,9 @@
 #include "controls.h"
 
 // Could probably change this to an enum
-float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
+const float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
 Uint8 scaleIndex = 0;
-synthFunc synths[] = { synthSine, synthSquare, synthSaw, synthTriangle, synthNoise };
+const synthFunc synths[] = { synthSine, synthSquare, synthSaw, synthTriangle, synthNoise };
 Uint8 synthIndex = 0;
 
 int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
@@ -32,8 +32,10 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 		synthData data;
 		data.startFreq = cMajorScale[scaleIndex];
 		data.endFreq = cMajorScale[(scaleIndex+1 >= sizeof(cMajorScale)/sizeof(float) ? 0 : scaleIndex+1)];
-		sounds[SOUND_TEST] = createSound(0.2f, synthSine, data);
-		//sounds[SOUND_TEST] = createSound(cMajorScale[scaleIndex], 0.2f, synths[synthIndex]);
+		data.volume = 32;
+		data.length = 0.2f;
+		data.attack = 1.0f;
+		sounds[SOUND_TEST] = createSound(synths[synthIndex], &data);
 	}
 	
 	// Draw the framerate counter

@@ -22,7 +22,10 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	synthData data;
 	data.startFreq = 261.6256;
 	data.endFreq = 440.0;
-	sounds[SOUND_TEST] = createSound(0.2f, synthSine, data);
+	data.volume = 32;
+	data.length = 0.2f;
+	data.attack = 0.2f;
+	sounds[SOUND_TEST] = createSound(synthSine, &data);
     
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao

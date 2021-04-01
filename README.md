@@ -16,6 +16,7 @@ It should work by just doing `make` in the command line since it's not a really 
 
 `Add music playing`<br>
 `Better synthesizer`<br>
+`Fix the tons of warnings from the function pointer typedef thing for the synthesizer functions`<br>
 `Optimize stuff`<br>
 `Make the makefile not garbage`<br>
 `Move stuff like headers into an include directory`<br>
