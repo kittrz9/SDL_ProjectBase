@@ -21,8 +21,9 @@ void freeAudioChannelChunk(int channel){
 #define PI  M_PI
 #define PI2 PI*2
 
-// (2^16) / 2
-#define OFFSET 32768
+// ((2^16) / 2)-1
+// Could be clearer to just use the 32 bit maximum and there's probably some like C standard library define or something with it
+#define OFFSET 32767
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
 void playSynth(synthFunc synth, synthData* data){
@@ -57,8 +58,6 @@ void playSynth(synthFunc synth, synthData* data){
 			break;
 		}
 	}
-	
-	return chunk;
 }
 
 Uint16 synthSine(float time){
@@ -66,7 +65,7 @@ Uint16 synthSine(float time){
 }
 
 Uint16 synthSquare(float time){
-	return (Uint16)(time < PI ? 0 : (OFFSET*2)-1);
+	return (Uint16)(time < PI ? 0 : OFFSET*2);
 }
 
 // Should probably find a way to make this change the pitch depending on the time
@@ -74,10 +73,11 @@ Uint16 synthNoise(UNUSED float time){
 	return (Uint16)(rand());
 }
 
+// These suddenly just kinda broke after the merge, and changing the PI2 to just PI worked somehow????
 Uint16 synthSaw(float time){
-	return (Uint16)(OFFSET*2 - ((time/PI2)*OFFSET*2));
+	return (Uint16)(OFFSET*2 - ((time/PI)*OFFSET));
 }
 
 Uint16 synthTriangle(float time){
-	return (Uint16)((time < PI ? ((time/PI2)*OFFSET*2) : (OFFSET*2 - (time/PI2)) ));
+	return (Uint16)((time < PI ? ((time/PI)*OFFSET*2) : (OFFSET*2 - (time/PI)) ));
 }
