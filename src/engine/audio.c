@@ -3,6 +3,9 @@
 #include <SDL2/SDL.h>
 #include <types.h>
 
+#if defined(WIN32) || defined(_WIN32)
+#define _USE_MATH_DEFINES
+#endif
 #include <math.h>
 #include <stdlib.h>
 
@@ -15,8 +18,8 @@ void freeAudioChannelChunk(int channel){
 	return;
 }
 
-#define PI  3.14159265358
-#define PI2 6.28318530718
+#define PI  M_PI
+#define PI2 PI*2
 
 // (2^16) / 2
 #define OFFSET 32768
@@ -58,25 +61,23 @@ void playSynth(synthFunc synth, synthData* data){
 	return chunk;
 }
 
-
-// Really ugly hard to read math shit
-synthFunc synthSine(float time){
+Uint16 synthSine(float time){
 	return (Uint16)((OFFSET * sin(time)) + OFFSET);
 }
 
-synthFunc synthSquare(float time){
+Uint16 synthSquare(float time){
 	return (Uint16)(time < PI ? 0 : (OFFSET*2)-1);
 }
 
 // Should probably find a way to make this change the pitch depending on the time
-synthFunc synthNoise(UNUSED float time){
+Uint16 synthNoise(UNUSED float time){
 	return (Uint16)(rand());
 }
 
-synthFunc synthSaw(float time){
+Uint16 synthSaw(float time){
 	return (Uint16)(OFFSET*2 - ((time/PI2)*OFFSET*2));
 }
 
-synthFunc synthTriangle(float time){
+Uint16 synthTriangle(float time){
 	return (Uint16)((time < PI ? ((time/PI2)*OFFSET*2) : (OFFSET*2 - (time/PI2)) ));
 }

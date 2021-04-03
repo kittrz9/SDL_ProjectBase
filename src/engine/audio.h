@@ -31,11 +31,11 @@ void playSynth(synthFunc synth, synthData* data);
 
 
 // Should probably use like a wave table or something so you don't need to calculate the entire wave every time you play the sound
-synthFunc synthSine(float time);
-synthFunc synthSquare(float time);
-synthFunc synthNoise(UNUSED float time);
-synthFunc synthSaw(float time);
-synthFunc synthTriangle(float time);
+Uint16 synthSine(float time);
+Uint16 synthSquare(float time);
+Uint16 synthNoise(UNUSED float time);
+Uint16 synthSaw(float time);
+Uint16 synthTriangle(float time);
 
 // Could probably have music be played using samples but idk
 // I'd have to either seperate the sound and music channels or increase the number of channels
