@@ -21,10 +21,21 @@ void loadSound(enum SOUND_ID sound, SDL_RWops* rw){
 	return;
 }
 
+// Needed for freeing Mix_Chunks
+Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
+
+void freeAudioChannelChunk(int channel){
+	printf("Freeing chunk %p\n", (void*)audioChannelChunks[channel]);
+	Mix_FreeChunk(audioChannelChunks[channel]);
+	printf("Done\n");
+	return;
+}
+
 void playSound(enum SOUND_ID sound, int loops){
 	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
 		if(Mix_Playing(i) == 0){
 			Mix_PlayChannel(i, sounds[sound], loops);
+			audioChannelChunks[i] = sounds[sound];
 			break;
 		}
 	}
@@ -39,6 +50,7 @@ void playSound(enum SOUND_ID sound, int loops){
 #define OFFSET 32768
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
+// At this point I should just set this to play the synth instead of creating the sound and putting that to the sounds array
 Mix_Chunk* createSound(synthFunc synth, synthData* data){
 	// Has to be multiplied by 16 because the audio format is U16 I think
 	// Should probably make this be like larger or lower size depending on the release part of the ADSR thing or whatever
