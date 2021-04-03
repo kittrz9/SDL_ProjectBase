@@ -32,8 +32,8 @@ void playSound(enum SOUND_ID sound, int loops){
 	return;
 }
 
-#define PI  3.14159265358
-#define PI2 6.28318530718
+#define PI  M_PI
+#define PI2 PI*2
 
 // (2^16) / 2
 #define OFFSET 32768
@@ -66,23 +66,23 @@ Mix_Chunk* createSound(synthFunc synth, synthData* data){
 	return chunk;
 }
 
-synthFunc synthSine(float time){
+Uint16 synthSine(float time){
 	return (Uint16)((OFFSET * sin(time)) + OFFSET);
 }
 
-synthFunc synthSquare(float time){
+Uint16 synthSquare(float time){
 	return (Uint16)(time < PI ? 0 : OFFSET);
 }
 
 // Should probably find a way to make this change the pitch depending on the time
-synthFunc synthNoise(UNUSED float time){
+Uint16 synthNoise(UNUSED float time){
 	return (Uint16)(rand());
 }
 
-synthFunc synthSaw(float time){
+Uint16 synthSaw(float time){
 	return (Uint16)(OFFSET - ((time/PI2)*OFFSET));
 }
 
-synthFunc synthTriangle(float time){
+Uint16 synthTriangle(float time){
 	return (Uint16)((time < PI ? ((time/PI2)*OFFSET) : (OFFSET - (time/PI2)) ));
 }
