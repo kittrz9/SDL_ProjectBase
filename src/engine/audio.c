@@ -6,24 +6,10 @@
 #include <math.h>
 #include <stdlib.h>
 
-Mix_Chunk* sounds[SOUNDS_LENGTH];
-
-void loadSound(enum SOUND_ID sound, SDL_RWops* rw){
-	printf("Loading sound %i\n", sound);
-	
-	sounds[sound] = Mix_LoadWAV_RW(rw, 1);
-	
-	if(sounds[sound] == NULL) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not load sound: %s\n", SDL_GetError());
-		return;
-	}
-	
-	return;
-}
-
 // Needed for freeing Mix_Chunks
 Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
 
+// Callback function for Mix_ChannelFinished 
 void freeAudioChannelChunk(int channel){
 	Mix_FreeChunk(audioChannelChunks[channel]);
 	return;
