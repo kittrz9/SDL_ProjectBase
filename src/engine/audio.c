@@ -58,12 +58,14 @@ void playSynth(synthFunc synth, synthData* data){
 	return chunk;
 }
 
+
+// Really ugly hard to read math shit
 synthFunc synthSine(float time){
 	return (Uint16)((OFFSET * sin(time)) + OFFSET);
 }
 
 synthFunc synthSquare(float time){
-	return (Uint16)(time < PI ? 0 : OFFSET);
+	return (Uint16)(time < PI ? 0 : (OFFSET*2)-1);
 }
 
 // Should probably find a way to make this change the pitch depending on the time
@@ -72,9 +74,9 @@ synthFunc synthNoise(UNUSED float time){
 }
 
 synthFunc synthSaw(float time){
-	return (Uint16)(OFFSET - ((time/PI2)*OFFSET));
+	return (Uint16)(OFFSET*2 - ((time/PI2)*OFFSET*2));
 }
 
 synthFunc synthTriangle(float time){
-	return (Uint16)((time < PI ? ((time/PI2)*OFFSET) : (OFFSET - (time/PI2)) ));
+	return (Uint16)((time < PI ? ((time/PI2)*OFFSET*2) : (OFFSET*2 - (time/PI2)) ));
 }
