@@ -3,6 +3,9 @@
 #include <SDL2/SDL.h>
 #include <types.h>
 
+#if defined(WIN32) || defined(_WIN32)
+#define _USE_MATH_DEFINES
+#endif
 #include <math.h>
 #include <stdlib.h>
 
