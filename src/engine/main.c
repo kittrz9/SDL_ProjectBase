@@ -35,6 +35,9 @@ int main(UNUSED int argc, UNUSED char** argv){
 	formatStr = malloc(MAX_STR_LEN);
 	
 	SDL_LogSetAllPriority(SDL_LOG_PRIORITY_WARN);
+	
+	// Set callback for when channel is done playing to free the chunk that was playing
+	Mix_ChannelFinished(freeAudioChannelChunk);
 
 	// Window stuff
 	SDL_Window* screen = NULL;

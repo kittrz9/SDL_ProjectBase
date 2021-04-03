@@ -9,29 +9,12 @@
 #include <math.h>
 #include <stdlib.h>
 
-Mix_Chunk* sounds[SOUNDS_LENGTH];
+// Needed for freeing Mix_Chunks
+Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
 
-void loadSound(enum SOUND_ID sound, SDL_RWops* rw){
-	printf("Loading sound %i\n", sound);
-	
-	sounds[sound] = Mix_LoadWAV_RW(rw, 1);
-	
-	if(sounds[sound] == NULL) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not load sound: %s\n", SDL_GetError());
-		return;
-	}
-	
-	return;
-}
-
-void playSound(enum SOUND_ID sound, int loops){
-	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
-		if(Mix_Playing(i) == 0){
-			Mix_PlayChannel(i, sounds[sound], loops);
-			break;
-		}
-	}
-	
+// Callback function for Mix_ChannelFinished 
+void freeAudioChannelChunk(int channel){
+	Mix_FreeChunk(audioChannelChunks[channel]);
 	return;
 }
 
@@ -42,7 +25,7 @@ void playSound(enum SOUND_ID sound, int loops){
 #define OFFSET 32768
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
-Mix_Chunk* createSound(synthFunc synth, synthData* data){
+void playSynth(synthFunc synth, synthData* data){
 	// Has to be multiplied by 16 because the audio format is U16 I think
 	// Should probably make this be like larger or lower size depending on the release part of the ADSR thing or whatever
 	size_t size = data->length * MIX_DEFAULT_FREQUENCY*16;
@@ -66,6 +49,15 @@ Mix_Chunk* createSound(synthFunc synth, synthData* data){
 	chunk->abuf = (Uint8*)audioBuffer;
 	chunk->alen = size;
 	chunk->volume = data->volume;
+	
+	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
+		if(Mix_Playing(i) == 0){
+			Mix_PlayChannel(i, chunk, 0);
+			audioChannelChunks[i] = chunk;
+			break;
+		}
+	}
+	
 	return chunk;
 }
 
@@ -74,7 +66,7 @@ Uint16 synthSine(float time){
 }
 
 Uint16 synthSquare(float time){
-	return (Uint16)(time < PI ? 0 : OFFSET);
+	return (Uint16)(time < PI ? 0 : (OFFSET*2)-1);
 }
 
 // Should probably find a way to make this change the pitch depending on the time
@@ -83,9 +75,9 @@ Uint16 synthNoise(UNUSED float time){
 }
 
 Uint16 synthSaw(float time){
-	return (Uint16)(OFFSET - ((time/PI2)*OFFSET));
+	return (Uint16)(OFFSET*2 - ((time/PI2)*OFFSET*2));
 }
 
 Uint16 synthTriangle(float time){
-	return (Uint16)((time < PI ? ((time/PI2)*OFFSET) : (OFFSET - (time/PI2)) ));
+	return (Uint16)((time < PI ? ((time/PI2)*OFFSET*2) : (OFFSET*2 - (time/PI2)) ));
 }

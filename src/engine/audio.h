@@ -5,14 +5,10 @@
 #include <stdbool.h>
 
 #include "types.h"
-#include "sounds.h"
 
 #define AUDIO_CHANNELS_AMOUNT 8
 
-// Loading from SDL_RWops in case I want to like read from something in RAM or something from like uncompressing something idk
-// Should probably just use audio synthesis or something instead of samples so it's easier to do stuff like pitch them and manipulate the audio or whatever
-void loadSound(enum SOUND_ID sound, SDL_RWops* rw);
-void playSound(enum SOUND_ID sound, int loops);
+void freeAudioChannelChunk(int channel);
 
 // Returns the value of the synth at the time provided (like sine(pi) would be 0)
 // Compiler gives a bunch of warnings because of this function pointer typedef that I can't figure out how to fix
@@ -29,7 +25,7 @@ typedef struct {
 	float attack, decay, sustain, release;
 } synthData;
 
-Mix_Chunk* createSound(synthFunc synth, synthData* data);
+void playSynth(synthFunc synth, synthData* data);
 // Should probably make a way to make a sound from a sample instead of using only synths
 // Something like "Mix_chunk* createSoundFromSample(Uint16* sample, synthData)" would probably work but would probably be better to just have them both be the same function and have it all just be determined by the synthData struct
 
@@ -44,6 +40,5 @@ Uint16 synthTriangle(float time);
 // Could probably have music be played using samples but idk
 // I'd have to either seperate the sound and music channels or increase the number of channels
 // I'd probably also need to make either my own sort of file format or like sequencer unless I somehow find a way to just use MIDI lmao
-
 
 #endif
