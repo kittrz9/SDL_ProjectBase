@@ -20,7 +20,14 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	}
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
-		playSound(SOUND_TEST, 0);
+		synthData data;
+		data.startFreq = cMajorScale[scaleIndex];
+		data.endFreq = cMajorScale[(scaleIndex+1 >= sizeof(cMajorScale)/sizeof(float) ? 0 : scaleIndex+1)];
+		data.volume = 32;
+		data.length = 0.2f;
+		data.attack = 1.0f;
+		playSynth(synths[synthIndex], &data);
+		
 		scaleIndex++;
 		if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
 			scaleIndex = 0; 
@@ -29,13 +36,6 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 				synthIndex = 0;
 			}
 		}
-		synthData data;
-		data.startFreq = cMajorScale[scaleIndex];
-		data.endFreq = cMajorScale[(scaleIndex+1 >= sizeof(cMajorScale)/sizeof(float) ? 0 : scaleIndex+1)];
-		data.volume = 32;
-		data.length = 0.2f;
-		data.attack = 1.0f;
-		sounds[SOUND_TEST] = createSound(synths[synthIndex], &data);
 	}
 	
 	// Draw the framerate counter
