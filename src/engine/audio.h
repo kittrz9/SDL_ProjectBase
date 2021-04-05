@@ -20,8 +20,8 @@ typedef struct {
 	float startFreq, endFreq; // Should probably make it so that if endFreq is like 0 or something it would just not do the sweep t hing
 	float length; // Length of the sound in seconds
 	Uint8 volume;
-	// decay sustain and release are unused for now since I haven't gotten around to making them work yet
-	// attack is like 0 through 1.0 where if you put 1.0 it goes for the whole sample/sound, though you could put higher values but it will end up lower volume than the input volume so like why would you do that when you could just change the volume in the data struct itself
+	// attack decay and release are all in seconds, sustain is between 0 and 1
+	// attack decay and release were changed to take seconds because it seemed weird to have the values change with longer notes after thinking about it a bit
 	float attack, decay, sustain, release;
 } synthData;
 

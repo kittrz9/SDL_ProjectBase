@@ -28,21 +28,45 @@ void freeAudioChannelChunk(int channel){
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
 void playSynth(synthFunc synth, synthData* data){
 	// Has to be multiplied by 16 because the audio format is U16 I think
-	// Should probably make this be like larger or lower size depending on the release part of the ADSR thing or whatever
-	size_t size = data->length * MIX_DEFAULT_FREQUENCY*16;
+	size_t size = (data->length + data->release) * MIX_DEFAULT_FREQUENCY*16;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
-	
-	double time = 0, freq = data->startFreq, attack = 0;
-	
+
+	// Having 2 variables with time in their name is probably bad and confusing but I can't think of something better for either of them. funcTime is what gets passed to the synth function
+	double funcTime = 0;
+	double time = 0.0;
+	//double freq = data->startFreq, attack = 0, decay = 1.0f, release = 1.0f;
+	double freq = data->startFreq, amplitude = 0.0;
 	for(size_t i = 0; i < size; i++){
-		audioBuffer[i] = synth(time) * attack;
+		audioBuffer[i] = synth(funcTime) * amplitude;
+		if(time < data->length){
+			freq += (data->endFreq - data->startFreq)/size;
+		}
 		
-		freq += (data->endFreq - data->startFreq)/size;
-		attack += (attack >= 1.0 ? 0 : (1/(data->attack))/size);
+		if(time <= data->attack){
+			amplitude = time/data->attack;
+		} else if(time <= data->attack + data->decay){
+			amplitude = (((data->sustain-1.0)*time))/(data->decay - data->attack)+1.0;
+		} else if(time <= data->length){
+			amplitude = data->sustain;
+		} else {
+			amplitude = (((0 - data->sustain)/(data->release))*time) + data->sustain;
+		}
+		
+		if(amplitude <0 ){
+			//printf("%f: %f\n", time, amplitude);
+			amplitude = 0;
+		}
+		if(amplitude > 1){
+			//printf("%f: %f\n", time, amplitude);
+			amplitude = 1;
+		}
 		
 		// Frequency also has to be divided by 8 for some reason to get the actual frequency, idk why
-		time += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;
-		if(time >= PI2) { time -= PI2; }
+		funcTime += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;
+		if(funcTime >= PI2) { funcTime -= PI2; }
+		
+		// This feels really really stupid lmao
+		time = ((float)i/(float)size)*(data->length+data->release);
 	}
 	
 	Mix_Chunk* chunk = malloc(sizeof(Mix_Chunk));

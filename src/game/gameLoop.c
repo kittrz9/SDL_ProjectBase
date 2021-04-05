@@ -22,7 +22,10 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	data.endFreq = 440.0;
 	data.volume = 32;
 	data.length = 0.2f;
-	data.attack = 0.2f;
+	data.attack = 0.1f;
+	data.decay = 0.05f;
+	data.sustain = 0.5f;
+	data.release = 0.1f;
 	playSynth(synthSine, &data);
     
 	// Create player entity
