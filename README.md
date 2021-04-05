@@ -14,7 +14,6 @@ It should work by just doing `make` in the command line since it's not a really 
 
 # Todo:
 
-`Fix the decay and release parts of the ADSR envelope thing for the synthesizer`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
 `Optimize stuff`<br>

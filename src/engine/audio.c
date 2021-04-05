@@ -38,26 +38,26 @@ void playSynth(synthFunc synth, synthData* data){
 	double freq = data->startFreq, amplitude = 0.0;
 	for(size_t i = 0; i < size; i++){
 		audioBuffer[i] = synth(funcTime) * amplitude;
-		if(time < data->length){
+		if(time < data->length && data->endFreq != 0){
 			freq += (data->endFreq - data->startFreq)/size;
 		}
 		
 		if(time <= data->attack){
 			amplitude = time/data->attack;
 		} else if(time <= data->attack + data->decay){
-			amplitude = (((data->sustain-1.0)*time))/(data->decay - data->attack)+1.0;
+			amplitude = (((data->sustain-1.0)*(time - data->attack)))/(data->decay)+1.0;
 		} else if(time <= data->length){
 			amplitude = data->sustain;
 		} else {
-			amplitude = (((0 - data->sustain)/(data->release))*time) + data->sustain;
+			amplitude = (((0 - data->sustain)/(data->release))*(time - data->length)) + data->sustain;
 		}
 		
 		if(amplitude <0 ){
-			//printf("%f: %f\n", time, amplitude);
+			printf("%f: %f\n", time, amplitude);
 			amplitude = 0;
 		}
 		if(amplitude > 1){
-			//printf("%f: %f\n", time, amplitude);
+			printf("%f: %f\n", time, amplitude);
 			amplitude = 1;
 		}
 		

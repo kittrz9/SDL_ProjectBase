@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "gameLoop.h"
 #include "gameStates.h"
@@ -20,7 +21,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	synthData data;
 	data.startFreq = 261.6256;
 	data.endFreq = 440.0;
-	data.volume = 32;
+	data.volume = 16;
 	data.length = 0.2f;
 	data.attack = 0.1f;
 	data.decay = 0.05f;
