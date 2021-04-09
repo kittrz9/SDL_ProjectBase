@@ -21,9 +21,8 @@ void freeAudioChannelChunk(int channel){
 #define PI  M_PI
 #define PI2 PI*2
 
-// ((2^16) / 2)-1
-// Could be clearer to just use the 32 bit maximum and there's probably some like C standard library define or something with it
-#define OFFSET 32767
+// Half of UINT16_MAX so it works
+#define OFFSET INT16_MAX
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
 void playSynth(synthFunc synth, synthData* data){
@@ -34,8 +33,8 @@ void playSynth(synthFunc synth, synthData* data){
 	// Having 2 variables with time in their name is probably bad and confusing but I can't think of something better for either of them. funcTime is what gets passed to the synth function
 	double funcTime = 0;
 	double time = 0.0;
-	//double freq = data->startFreq, attack = 0, decay = 1.0f, release = 1.0f;
 	double freq = data->startFreq, amplitude = 0.0;
+	
 	for(size_t i = 0; i < size; i++){
 		audioBuffer[i] = synth(funcTime) * amplitude;
 		if(time < data->length && data->endFreq != 0){
@@ -45,14 +44,14 @@ void playSynth(synthFunc synth, synthData* data){
 		if(time <= data->attack){
 			amplitude = time/data->attack;
 		} else if(time <= data->attack + data->decay){
-			amplitude = (((data->sustain-1.0)*(time - data->attack)))/(data->decay)+1.0;
+			amplitude = (((data->sustain-1.0)*(time - data->attack)))/(data->decay) + 1.0;
 		} else if(time <= data->length){
 			amplitude = data->sustain;
 		} else {
 			amplitude = (((0 - data->sustain)/(data->release))*(time - data->length)) + data->sustain;
 		}
 		
-		if(amplitude <0 ){
+		if(amplitude < 0){
 			printf("%f: %f\n", time, amplitude);
 			amplitude = 0;
 		}

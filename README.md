@@ -16,6 +16,7 @@ It should work by just doing `make` in the command line since it's not a really 
 
 `Add music playing`<br>
 `Better synthesizer`<br>
+`Sequencer and file format or whatever to play music with the synthesizer`<br>
 `Optimize stuff`<br>
 `Make the makefile not garbage`<br>
 `Move stuff like headers into an include directory`<br>

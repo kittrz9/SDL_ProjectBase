@@ -28,7 +28,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 		data.length = 0.2f;
 		data.attack = 0.05f;
 		data.decay = 0.05f;
-		data.sustain = 0.1f;
+		data.sustain = 0.2f;
 		data.release = 0.5f;
 		playSynth(synths[synthIndex], &data);
 		
