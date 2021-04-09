@@ -38,7 +38,8 @@ void playSynth(synthFunc synth, synthData* data){
 	for(size_t i = 0; i < size; i++){
 		audioBuffer[i] = synth(funcTime) * amplitude;
 		if(time < data->length && data->endFreq != 0){
-			freq += (data->endFreq - data->startFreq)/size;
+			// Really ugly code, dividing by what the size would be without taking into account release time since I don't want to have the frequency sweep during that time
+			freq += (data->endFreq - data->startFreq)/(data->length * MIX_DEFAULT_FREQUENCY*16);
 		}
 		
 		if(time <= data->attack){
