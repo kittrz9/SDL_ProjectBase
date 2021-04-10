@@ -25,7 +25,7 @@ typedef struct {
 	float attack, decay, sustain, release;
 } synthData;
 
-void playSynth(synthFunc synth, synthData* data);
+bool playSynth(synthFunc synth, synthData* data);
 // Should probably make a way to make a sound from a sample instead of using only synths
 // Something like "Mix_chunk* createSoundFromSample(Uint16* sample, synthData)" would probably work but would probably be better to just have them both be the same function and have it all just be determined by the synthData struct
 

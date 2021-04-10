@@ -30,14 +30,14 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 		data.decay = 0.05f;
 		data.sustain = 0.2f;
 		data.release = 0.5f;
-		playSynth(synths[synthIndex], &data);
-		
-		scaleIndex++;
-		if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
-			scaleIndex = 0; 
-			synthIndex++;
-			if(synthIndex >= sizeof(synths)/sizeof(synthFunc)) {
-				synthIndex = 0;
+		if(playSynth(synths[synthIndex], &data)) {
+			scaleIndex++;
+			if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
+				scaleIndex = 0; 
+				synthIndex++;
+				if(synthIndex >= sizeof(synths)/sizeof(synthFunc)) {
+					synthIndex = 0;
+				}
 			}
 		}
 	}

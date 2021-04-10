@@ -13,8 +13,12 @@
 Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
 
 // Callback function for Mix_ChannelFinished 
+// I think I finally actually got the memory leak to not be as bad? It still goes up a bit for the first few times the synth is played but then settles at about 13 MB of RAM usage for me
 void freeAudioChannelChunk(int channel){
-	Mix_FreeChunk(audioChannelChunks[channel]);
+	// SDL_mixer's documentation says to not call mixer functions in the callback so I guess I can't use the free chunk function
+	//Mix_FreeChunk(audioChannelChunks[channel]);
+	free(audioChannelChunks[channel]->abuf);
+	free(audioChannelChunks[channel]);
 	return;
 }
 
@@ -25,11 +29,24 @@ void freeAudioChannelChunk(int channel){
 #define OFFSET INT16_MAX
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
-void playSynth(synthFunc synth, synthData* data){
+bool playSynth(synthFunc synth, synthData* data){
+	// Check if there are any free sound channels
+	int freeChannel = -1;
+	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
+		if(Mix_Playing(i) == 0){
+			freeChannel = i;
+			break;
+		}
+	}
+	if(freeChannel == -1){
+		return false;
+	}
+	
+	
 	// Has to be multiplied by 16 because the audio format is U16 I think
 	size_t size = (data->length + data->release) * MIX_DEFAULT_FREQUENCY*16;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
-
+	
 	// Having 2 variables with time in their name is probably bad and confusing but I can't think of something better for either of them. funcTime is what gets passed to the synth function
 	double funcTime = 0;
 	double time = 0.0;
@@ -65,7 +82,7 @@ void playSynth(synthFunc synth, synthData* data){
 		funcTime += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;
 		if(funcTime >= PI2) { funcTime -= PI2; }
 		
-		// This feels really really stupid lmao
+		// This feels really really stupid lmao, at least one of these has to be cast to a float so the division doesn't return an int
 		time = ((float)i/(float)size)*(data->length+data->release);
 	}
 	
@@ -75,13 +92,11 @@ void playSynth(synthFunc synth, synthData* data){
 	chunk->alen = size;
 	chunk->volume = data->volume;
 	
-	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
-		if(Mix_Playing(i) == 0){
-			Mix_PlayChannel(i, chunk, 0);
-			audioChannelChunks[i] = chunk;
-			break;
-		}
-	}
+	
+	Mix_PlayChannel(freeChannel, chunk, 0);
+	audioChannelChunks[freeChannel] = chunk;
+	
+	return true;
 }
 
 Uint16 synthSine(float time){
