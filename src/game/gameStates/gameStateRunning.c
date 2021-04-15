@@ -20,16 +20,16 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	}
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
-		synthData data;
-		data.startFreq = cMajorScale[scaleIndex];
-		//data.endFreq = cMajorScale[(scaleIndex+1u >= sizeof(cMajorScale)/sizeof(float) ? 0 : scaleIndex+1)];
-		data.endFreq = 0;
-		data.volume = 16;
-		data.length = 0.2f;
-		data.attack = 0.05f;
-		data.decay = 0.05f;
-		data.sustain = 0.2f;
-		data.release = 0.5f;
+		synthData data = {
+			.startFreq = cMajorScale[scaleIndex],
+			.endFreq = 0,
+			.volume = 16,
+			.length = 0.2f,
+			.attack = 0.05f,
+			.decay = 0.05f,
+			.sustain = 0.2f,
+			.release = 0.5f
+		};
 		if(playSynth(synths[synthIndex], &data)) {
 			scaleIndex++;
 			if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
