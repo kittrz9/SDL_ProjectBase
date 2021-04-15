@@ -1,5 +1,7 @@
 #include "player.h"
 
+#include "defines.h"
+
 #define playerObj ((playerStruct*)(ent->object))
 
 struct entity* createPlayer(float x, float y, float w, float h){
@@ -17,7 +19,7 @@ struct entity* createPlayer(float x, float y, float w, float h){
 }
 
 void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
-	SDL_Rect rect; // Maybe like unoptimal to have this always being created every time the player needs to be drawn but idk maybe the compiler will optimize it? I also feel like it's better than when I just had the SDL_Rect in the entity's struct
+	SDL_Rect rect;
 	rect.x = playerObj->pos.x;
 	rect.y = playerObj->pos.y;
 	rect.w = playerObj->size.x;
@@ -52,7 +54,6 @@ void updatePlayer(struct entity* ent, double deltaTime){
 	// Boundary check
 	if(playerObj->pos.x < 0) {playerObj->pos.x = 0;}
 	if(playerObj->pos.y < 0) {playerObj->pos.y = 0;}
-	// Really need to fix these numbers here but I don't really want to right now
-	if(playerObj->pos.x > 800 - playerObj->size.x) {playerObj->pos.x = 800 - playerObj->size.x;}
-	if(playerObj->pos.y > 600 - playerObj->size.y) {playerObj->pos.y = 600 - playerObj->size.y;}
+	if(playerObj->pos.x > WIDTH - playerObj->size.x) {playerObj->pos.x = WIDTH - playerObj->size.x;}
+	if(playerObj->pos.y > HEIGHT - playerObj->size.y) {playerObj->pos.y = HEIGHT - playerObj->size.y;}
 }

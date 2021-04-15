@@ -3,11 +3,8 @@
 #include <SDL2/SDL.h>
 #include <types.h>
 
-#if defined(WIN32) || defined(_WIN32)
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Needed for freeing Mix_Chunks
 Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
@@ -21,9 +18,6 @@ void freeAudioChannelChunk(int channel){
 	free(audioChannelChunks[channel]);
 	return;
 }
-
-#define PI  M_PI
-#define PI2 PI*2
 
 // Half of UINT16_MAX so it works
 #define OFFSET INT16_MAX

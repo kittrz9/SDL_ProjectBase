@@ -5,14 +5,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "defines.h"
 #include "gameLoop.h"
 #include "text.h"
 #include "types.h"
 #include "audio.h"
-
-// Should probably be moved away from main.c since other things need to use the screen size
-#define WIDTH 800
-#define HEIGHT 600
 
 #define init(x) if(x < 0) {\
 			printf(#x " failed: %s\n", SDL_GetError());\

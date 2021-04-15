@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "types.h"
+#include "defines.h"
 
 #define AUDIO_CHANNELS_AMOUNT 8
 

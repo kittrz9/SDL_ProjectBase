@@ -19,6 +19,8 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
+`defines.h` is where defines that can be used in other files are.<br>
+
 ### src/game/ directory
 `gameLoop.c` is where the while loop that always runs while the game is running. Probably should be renamed since the <br>
 
