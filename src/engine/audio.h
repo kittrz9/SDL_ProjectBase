@@ -15,18 +15,23 @@ void freeAudioChannelChunk(int channel);
 // Compiler gives a bunch of warnings because of this function pointer typedef that I can't figure out how to fix
 typedef Uint16 (*synthFunc)(float);
 
-// There's probably a better solution to this but I feel like having this struct makes it easier to have a sort of sequencer if I ever add that eventually, since I could just have a file be all of the elements of the data struct to make the song or whatever
-// Though would probably be really inefficient to recalculate every like waveform or whatever for every note so idk
+// Where the envelope and synth function to be used with the synthesizer is defined
+// idk if this is actually better or worse than having all of this just be in the data struct but I think it might make making a sequencer easier since you wont need to redefine the envelope and stuff every time you want a note played
+typedef struct {
+	// attack decay and release are all in seconds, sustain is between 0 and 1
+	// attack decay and release were changed to take seconds because it seemed weird to have the values change with longer notes after thinking about it a bit
+	struct { float attack, decay, sustain, release; } envelope;
+	synthFunc synth; // Could probably set this by having an enum to represent all the synth functions and assign this function with that in the sequencer file format or whatever
+} synthInstrument;
+
 typedef struct {
 	float startFreq, endFreq; // Should probably make it so that if endFreq is like 0 or something it would just not do the sweep t hing
 	float length; // Length of the sound in seconds
 	Uint8 volume;
-	// attack decay and release are all in seconds, sustain is between 0 and 1
-	// attack decay and release were changed to take seconds because it seemed weird to have the values change with longer notes after thinking about it a bit
-	float attack, decay, sustain, release;
+	synthInstrument* instrument; // seperate struct becuase I think it might make making a sequencer a lot less bad since you wont need to constantly redefine the envelope and stuff for every note making the file extremely large
 } synthData;
 
-bool playSynth(synthFunc synth, synthData* data);
+bool playSynth(synthData* data);
 // Should probably make a way to make a sound from a sample instead of using only synths
 // Something like "Mix_chunk* createSoundFromSample(Uint16* sample, synthData)" would probably work but would probably be better to just have them both be the same function and have it all just be determined by the synthData struct
 

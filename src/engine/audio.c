@@ -23,7 +23,8 @@ void freeAudioChannelChunk(int channel){
 #define OFFSET INT16_MAX
 
 // https://gist.github.com/amirrajan/fa6ce9fdc8918e06ca9759c3358e4cd2
-bool playSynth(synthFunc synth, synthData* data){
+#define envelope (data->instrument->envelope)
+bool playSynth(synthData* data){
 	// Check if there are any free sound channels
 	int freeChannel = -1;
 	for(int i = 0; i < AUDIO_CHANNELS_AMOUNT; i++){
@@ -38,7 +39,7 @@ bool playSynth(synthFunc synth, synthData* data){
 	
 	
 	// Has to be multiplied by 16 because the audio format is U16 I think
-	size_t size = (data->length + data->release) * MIX_DEFAULT_FREQUENCY*16;
+	size_t size = (data->length + envelope.release) * MIX_DEFAULT_FREQUENCY*16;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
 	
 	// Having 2 variables with time in their name is probably bad and confusing but I can't think of something better for either of them. funcTime is what gets passed to the synth function
@@ -47,20 +48,20 @@ bool playSynth(synthFunc synth, synthData* data){
 	double freq = data->startFreq, amplitude = 0.0;
 	
 	for(size_t i = 0; i < size; i++){
-		audioBuffer[i] = synth(funcTime) * amplitude;
-		if(time < data->length && data->endFreq != 0){
+		audioBuffer[i] = data->instrument->synth(funcTime) * amplitude;
+		if(data->endFreq != 0 && time < data->length){
 			// Really ugly code, dividing by what the size would be without taking into account release time since I don't want to have the frequency sweep during that time
 			freq += (data->endFreq - data->startFreq)/(data->length * MIX_DEFAULT_FREQUENCY*16);
 		}
 		
-		if(time <= data->attack){
-			amplitude = time/data->attack;
-		} else if(time <= data->attack + data->decay){
-			amplitude = (((data->sustain-1.0)*(time - data->attack)))/(data->decay) + 1.0;
+		if(time <= envelope.attack){
+			amplitude = time/envelope.attack;
+		} else if(time <= envelope.attack + envelope.decay){
+			amplitude = (((envelope.sustain-1.0)*(time - envelope.attack)))/(envelope.decay) + 1.0;
 		} else if(time <= data->length){
-			amplitude = data->sustain;
+			amplitude = envelope.sustain;
 		} else {
-			amplitude = (((0 - data->sustain)/(data->release))*(time - data->length)) + data->sustain;
+			amplitude = (((0 - envelope.sustain)/(envelope.release))*(time - data->length)) + envelope.sustain;
 		}
 		
 		if(amplitude < 0){
@@ -77,7 +78,7 @@ bool playSynth(synthFunc synth, synthData* data){
 		if(funcTime >= PI2) { funcTime -= PI2; }
 		
 		// This feels really really stupid lmao, at least one of these has to be cast to a float so the division doesn't return an int
-		time = ((float)i/(float)size)*(data->length+data->release);
+		time = ((float)i/(float)size)*(data->length + envelope.release);
 	}
 	
 	Mix_Chunk* chunk = malloc(sizeof(Mix_Chunk));

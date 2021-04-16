@@ -17,18 +17,25 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	double deltaTime = 0;
 
 	initControls();
+	
+	synthInstrument instrument = {
+		.envelope = {
+			.attack = 0.1f,
+			.decay = 0.05f,
+			.sustain = 0.5f,
+			.release = 0.2f,
+		},
+		.synth = synthSine,
+	};
 
 	synthData data = {
 		.startFreq = 261.6256,
 		.endFreq = 440.0,
 		.volume = 16,
 		.length = 0.1f,
-		.attack = 0.1f,
-		.decay = 0.05f,
-		.sustain = 0.5f,
-		.release = 0.2f,
+		.instrument = &instrument,
 	};
-	playSynth(synthSine, &data);
+	playSynth(&data);
     
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao

@@ -15,7 +15,7 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `text.c` and `text.h` is where text rendering is implemeneted.<br>
 
-`types.h` has really basic types defined that can be useful like `vec2f`. It also has `UNUSED` defined but is used to tell the compiler when a variable isn't used. Should probably move it to a seperate file or something.<br>
+`types.h` has really basic types defined that can be useful like `vec2f`.<br>
 
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
@@ -48,7 +48,6 @@ It should work by just doing `make` in the command line since it's not a really 
 `Better synthesizer`<br>
 `Sequencer and file format or whatever to play music with the synthesizer`<br>
 `Optimize text rendering`<br>
-`Move UNUSED define to a different file`<br>
 `Fix entityNOP compiler errors when actually used`<br>
 `Make the makefile not garbage`<br>
 `Move stuff like headers into an include directory`<br>
