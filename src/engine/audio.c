@@ -6,16 +6,23 @@
 #include <stdlib.h>
 #include <math.h>
 
+
+
+typedef struct {
+	Mix_Chunk* chunk;
+	bool reserved; // Used so that if you're playing a sound through a Mix_Chunk from like an mp3 file or something it doesn't free the Mix_Chunk
+} sound;
+
 // Needed for freeing Mix_Chunks
-Mix_Chunk* audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
+sound audioChannelChunks[AUDIO_CHANNELS_AMOUNT];
 
 // Callback function for Mix_ChannelFinished 
 // I think I finally actually got the memory leak to not be as bad? It still goes up a bit for the first few times the synth is played but then settles at about 13 MB of RAM usage for me
 void freeAudioChannelChunk(int channel){
-	// SDL_mixer's documentation says to not call mixer functions in the callback so I guess I can't use the free chunk function
-	//Mix_FreeChunk(audioChannelChunks[channel]);
-	free(audioChannelChunks[channel]->abuf);
-	free(audioChannelChunks[channel]);
+	if(!audioChannelChunks[channel].reserved){
+		free(audioChannelChunks[channel].chunk->abuf);
+		free(audioChannelChunks[channel].chunk);
+	}
 	return;
 }
 
@@ -89,7 +96,12 @@ bool playSynth(synthData* data){
 	
 	
 	Mix_PlayChannel(freeChannel, chunk, 0);
-	audioChannelChunks[freeChannel] = chunk;
+	
+	sound s = {
+		.chunk = chunk,
+		.reserved = false,
+	};
+	audioChannelChunks[freeChannel] = s;
 	
 	return true;
 }

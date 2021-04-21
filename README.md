@@ -44,6 +44,7 @@ It should work by just doing `make` in the command line since it's not a really 
 
 ## Todo:
 
+`Linux to Windows cross compiling`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
 `Sequencer and file format or whatever to play music with the synthesizer`<br>
