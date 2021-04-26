@@ -74,9 +74,9 @@ void updatePlayer(struct entity* ent, double deltaTime){
 	
 	bool moving = false;
 
-#define GRAVITY 0.001f
+#define GRAVITY 0.01f
 	if(playerObj->pos.y < HEIGHT - playerObj->size.y){
-		playerObj->vel.y += GRAVITY;
+		playerObj->vel.y += GRAVITY * deltaTime;
 	}
 	
 	// i really dont care enough to make it check if you're on the ground, it's funny being able to constantly jump
