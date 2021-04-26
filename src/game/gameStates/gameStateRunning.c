@@ -33,7 +33,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 		synthData data = {
 			.startFreq = cMajorScale[scaleIndex],
 			.endFreq = 0,
-			.volume = 16,
+			.volume = 1.0,
 			.length = 0.2f,
 			.instrument = &inst,
 		};

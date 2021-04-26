@@ -27,7 +27,7 @@ typedef struct {
 typedef struct {
 	float startFreq, endFreq; // Should probably make it so that if endFreq is like 0 or something it would just not do the sweep t hing
 	float length; // Length of the sound in seconds
-	Uint8 volume;
+	float volume;
 	synthInstrument* instrument; // seperate struct becuase I think it might make making a sequencer a lot less bad since you wont need to constantly redefine the envelope and stuff for every note making the file extremely large
 } synthData;
 
@@ -42,6 +42,9 @@ Uint16 synthSquare(float time);
 Uint16 synthNoise(UNUSED float time);
 Uint16 synthSaw(float time);
 Uint16 synthTriangle(float time);
+
+// Used for the sequencer
+enum synthID {SYNTHSINE, SYNTHSQUARE, SYNTHNOISE, SYNTHSAW, SYNTHTRIANGLE};
 
 // Could probably have music be played using samples but idk
 // I'd have to either seperate the sound and music channels or increase the number of channels

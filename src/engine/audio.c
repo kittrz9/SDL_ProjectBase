@@ -55,7 +55,7 @@ bool playSynth(synthData* data){
 	double freq = data->startFreq, amplitude = 0.0;
 	
 	for(size_t i = 0; i < size; i++){
-		audioBuffer[i] = data->instrument->synth(funcTime) * amplitude;
+		audioBuffer[i] = data->instrument->synth(funcTime) * amplitude * data->volume;
 		if(data->endFreq != 0 && time < data->length){
 			// Really ugly code, dividing by what the size would be without taking into account release time since I don't want to have the frequency sweep during that time
 			freq += (data->endFreq - data->startFreq)/(data->length * MIX_DEFAULT_FREQUENCY*16);
@@ -92,7 +92,7 @@ bool playSynth(synthData* data){
 	chunk->allocated = 1;
 	chunk->abuf = (Uint8*)audioBuffer;
 	chunk->alen = size;
-	chunk->volume = data->volume;
+	chunk->volume = 16;
 	
 	
 	Mix_PlayChannel(freeChannel, chunk, 0);

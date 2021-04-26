@@ -31,7 +31,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	synthData data = {
 		.startFreq = 261.6256,
 		.endFreq = 440.0,
-		.volume = 16,
+		.volume = 1.0,
 		.length = 0.1f,
 		.instrument = &instrument,
 	};
@@ -39,7 +39,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
     
 	// Create player entity
 	// Returns a pointer to the player but does nothing with it lmao
-	createPlayer(50, 50, 100, 100);
+	createPlayer(renderer, 50, 50, 100, 100);
 	
 	while(running){
 		// Decrement the pressed timer for each key if they're being pressed
