@@ -10,9 +10,7 @@
 
 typedef struct {
 	vec2f pos, size, vel;
-	//float animationTimer;
-	//Uint16 animationIndex;
-	//SDL_Texture* animationTexture;
+	float jumpTimer;
 	animationStruct* animation;
 	
 	// Probably a really dumb way to draw the character looking a specific direction when moving
@@ -22,6 +20,7 @@ typedef struct {
 struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, float h);
 
 void drawPlayer(struct entity* ent, SDL_Renderer* renderer);
-void updatePlayer(struct entity* ent, double deltaTime);
+void updatePlayerInAir(struct entity* ent, double deltaTime);
+void updatePlayerOnGround(struct entity* ent, double deltaTime);
 
 #endif

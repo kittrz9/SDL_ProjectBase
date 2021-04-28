@@ -17,6 +17,8 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `types.h` has really basic types defined that can be useful like `vec2f`.<br>
 
+`animation.h` has structs for animations using texture rects.<br>
+
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
 `defines.h` is where defines that can be used in other files are.<br>
@@ -57,5 +59,4 @@ It should work by just doing `make` in the command line since it's not a really 
 `More types in types.h`<br>
 `Maybe start using CMake?`<br>
 `Controller support`<br>
-`Animation system or something`<br>
 `Maybe just move to just regular OpenGL lmao`<br>
