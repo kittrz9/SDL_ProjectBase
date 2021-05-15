@@ -8,8 +8,8 @@
 
 #define playerObj ((playerStruct*)(ent->object))
 
-
-animationFrame testAnimation[] = {
+// should probably make a sort of file format for animations instead of making them have to be hardcoded
+animationFrame runAnimation[] = {
 	{
 		.rect={
 			.x=0,
@@ -30,6 +30,18 @@ animationFrame testAnimation[] = {
 	}
 };
 
+animationFrame idleAnimation[] = {
+	{
+		.rect={
+			.x=0,
+			.y=0,
+			.w=326,
+			.h=379,
+		},
+		.delay=-1.0f,
+	}
+};
+
 struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, float h){
 	// Create player entity
 	struct entity* ent = malloc(sizeof(struct entity));
@@ -45,12 +57,9 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	playerObj->animation->texture = SDL_CreateTextureFromSurface(renderer, IMG_Load("res/test.png"));
 	playerObj->animation->timer = 0.0f;
 	playerObj->animation->index = 0;
-	playerObj->animation->frames = testAnimation;
-	playerObj->animation->length = sizeof(testAnimation)/sizeof(animationFrame);
-	
-	//playerObj->animationTimer = 0.0f;
-	//playerObj->animationIndex = 0;
-	//playerObj->animationTexture = SDL_CreateTextureFromSurface(renderer, IMG_Load("res/test.png"));
+	playerObj->animation->frames = idleAnimation;
+	playerObj->animation->length = sizeof(idleAnimation)/sizeof(animationFrame);
+	playerObj->animation->nextAnim = NULL;
 	
 	ent->draw = drawPlayer;
 	ent->update = updatePlayerInAir;
@@ -99,7 +108,7 @@ void playerUpdateAnimation(struct entity* ent, double deltaTime, bool moving){
 		playerObj->animation->timer += deltaTime;
 		if(playerObj->animation->timer >= playerObj->animation->frames[playerObj->animation->index].delay * 1000){
 			playerObj->animation->timer = 0.0f;
-			if(playerObj->animation->index >= sizeof(testAnimation)/sizeof(animationFrame) - 1){
+			if(playerObj->animation->index >= playerObj->animation->length){
 				playerObj->animation->index = 0;
 			} else {
 				playerObj->animation->index++;
@@ -142,7 +151,14 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 		ent->update = updatePlayerInAir;
 	}
 	
-	playerUpdateAnimation(ent, deltaTime, moving);
+	if(moving && playerObj->animation->frames != runAnimation){
+		setAnimation(playerObj->animation, runAnimation, sizeof(runAnimation)/sizeof(animationFrame));
+	} else if(!moving){
+		setAnimation(playerObj->animation, idleAnimation, sizeof(idleAnimation)/sizeof(animationFrame));
+	}
+	
+	updateAnimation(playerObj->animation, deltaTime);
+	//playerUpdateAnimation(ent, deltaTime, moving);
 	
 	// Boundary check
 	playerBoundaryCheck(ent);
@@ -159,7 +175,7 @@ void updatePlayerInAir(struct entity* ent, double deltaTime){
 	}
 	
 	if(keys[UP].pressedTimer > 0.0 && playerObj->jumpTimer <= 0.0){
-		playerObj->jumpTimer = 0.1; // in seconds
+		playerObj->jumpTimer = 0.05; // in seconds
 	}
 	
 	if(keys[LEFT].held) {
@@ -174,7 +190,13 @@ void updatePlayerInAir(struct entity* ent, double deltaTime){
 		playerObj->vel.x =  0;
 	}
 	
-	playerUpdateAnimation(ent, deltaTime, moving);
+	if(moving && playerObj->animation->frames != runAnimation){
+		setAnimation(playerObj->animation, runAnimation, sizeof(runAnimation)/sizeof(animationFrame));
+	} else if(!moving){
+		setAnimation(playerObj->animation, idleAnimation, sizeof(idleAnimation)/sizeof(animationFrame));
+	}
+	
+	updateAnimation(playerObj->animation, deltaTime);
 	
 	// apply gravity and check for jump 
 #define GRAVITY 0.01f
