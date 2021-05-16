@@ -7,6 +7,8 @@ void setAnimation(animationStruct* anim, animationFrame* frames, Uint16 length){
 	anim->length = length;
 	anim->index = 0;
 	anim->timer = 0.0f;
+	
+	return;
 }
 
 void updateAnimation(animationStruct* anim, double deltaTime){
@@ -18,13 +20,12 @@ void updateAnimation(animationStruct* anim, double deltaTime){
 	anim->timer += deltaTime;
 	if(anim->timer >= currentFrame.delay * 1000){
 		anim->timer = 0.0f;
+		anim->index++;
 		if(anim->index >= anim->length){
 			anim->index = 0;
 			if(anim->nextAnim != NULL){
 				setAnimation(anim, anim->nextAnim, anim->nextAnimLength);
 			}
-		} else {
-			anim->index++;
 		}
 	}
 	

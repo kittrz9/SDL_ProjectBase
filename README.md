@@ -17,7 +17,7 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `types.h` has really basic types defined that can be useful like `vec2f`.<br>
 
-`animation.h` has structs for animations using texture rects.<br>
+`animation.h` has stuff for really basic animation using texture rects<br>
 
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
@@ -30,10 +30,10 @@ The `gameStates` directory is where source files with functions that will be cal
 
 `controls.h` and `controls.c` are where the controls used in game are defined (in `controls.h`) and initialized (in `contorls.c`).
 
-`player.c` and `player.h` are just example source files for a simple entity to show how entities work.
+`player.c` and `player.h` are just example source files for a simple entity to show how entities work. should probably eventually move entities into their own directory like how the game states are.
 
 ### res/ directory
-the `res` directory is just where resources used in game are (Like images and stuff). It just has the Terminus TTF font (https://files.ax86.net/terminus-ttf/) for now.
+the `res` directory is just where resources used in game are (Like images and stuff). It just has the Terminus TTF font (https://files.ax86.net/terminus-ttf/) and a placeholder graphic to test texture rect animations for now.
 
 ---
 

@@ -75,9 +75,10 @@ void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
 	drawRect.h = playerObj->size.y;
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-	//SDL_RenderDrawRect(renderer, &drawRect);
 	// REALLY need to change this so I don't have to have this massive line of code just because I'm accessing pointers to structs in pointers from structs from pointers lmao
 	SDL_RenderCopyEx(renderer, playerObj->animation->texture, &playerObj->animation->frames[playerObj->animation->index].rect, &drawRect, 0, NULL, (playerObj->facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
+	
+	return;
 }
 
 // feels kinda dumb to have a function just for this but if both update functions need to play the same sound it probably shouldn't just reuse the same code
@@ -101,23 +102,6 @@ void playJumpSound(){
 		.instrument = &instrument,
 	};
 	playSynth(&data);
-}
-
-void playerUpdateAnimation(struct entity* ent, double deltaTime, bool moving){
-	if(moving){
-		playerObj->animation->timer += deltaTime;
-		if(playerObj->animation->timer >= playerObj->animation->frames[playerObj->animation->index].delay * 1000){
-			playerObj->animation->timer = 0.0f;
-			if(playerObj->animation->index >= playerObj->animation->length){
-				playerObj->animation->index = 0;
-			} else {
-				playerObj->animation->index++;
-			}
-		}
-	} else {
-		playerObj->animation->timer = 0.0f;
-		playerObj->animation->index = 0;
-	}
 }
 
 void playerBoundaryCheck(struct entity* ent){
@@ -158,7 +142,6 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 	}
 	
 	updateAnimation(playerObj->animation, deltaTime);
-	//playerUpdateAnimation(ent, deltaTime, moving);
 	
 	// Boundary check
 	playerBoundaryCheck(ent);
