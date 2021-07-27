@@ -61,6 +61,8 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	playerObj->animation->length = sizeof(idleAnimation)/sizeof(animationFrame);
 	playerObj->animation->nextAnim = NULL;
 	
+	playerObj->moving = false;
+	
 	ent->draw = drawPlayer;
 	ent->update = updatePlayerInAir;
 	pushToEntityList(ent);
@@ -111,23 +113,41 @@ void playerBoundaryCheck(struct entity* ent){
 	if(playerObj->pos.y > HEIGHT - playerObj->size.y) {playerObj->pos.y = HEIGHT - playerObj->size.y;}
 }
 
-void updatePlayerOnGround(struct entity* ent, double deltaTime){
+
+#define MAX_RUN_SPEED 0.8
+#define PLAYER_RUN_ACCEL 0.008
+
+// the physics stuff done for both states
+void commonPhysicsCheck(struct entity* ent, double deltaTime){		
 	playerObj->pos.x += playerObj->vel.x * deltaTime;
 	playerObj->pos.y += playerObj->vel.y * deltaTime;
 	
-	bool moving = false;
+	playerBoundaryCheck(ent);
 	
 	if(keys[LEFT].held) {
 		playerObj->facingLeft = true;
-		playerObj->vel.x = -1;
-		moving = true;
+		if(playerObj->vel.x > -MAX_RUN_SPEED){
+			playerObj->vel.x -= PLAYER_RUN_ACCEL * deltaTime;
+		} else {
+			playerObj->vel.x = -MAX_RUN_SPEED;
+		}
+		playerObj->moving = true;
 	} else if(keys[RIGHT].held) {
 		playerObj->facingLeft = false;
-		playerObj->vel.x =  1;
-		moving = true;
+		if(playerObj->vel.x < MAX_RUN_SPEED){
+			playerObj->vel.x += PLAYER_RUN_ACCEL * deltaTime;
+		} else {
+			playerObj->vel.x = MAX_RUN_SPEED;
+		}
+		playerObj->moving = true;
 	} else {
 		playerObj->vel.x =  0;
+		playerObj->moving = false;
 	}
+}
+
+void updatePlayerOnGround(struct entity* ent, double deltaTime){
+	commonPhysicsCheck(ent, deltaTime);
 	
 	if(keys[UP].pressedTimer > 0.0){
 		playJumpSound();
@@ -135,9 +155,9 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 		ent->update = updatePlayerInAir;
 	}
 	
-	if(moving && playerObj->animation->frames != runAnimation){
+	if(playerObj->moving && playerObj->animation->frames != runAnimation){
 		setAnimation(playerObj->animation, runAnimation, sizeof(runAnimation)/sizeof(animationFrame));
-	} else if(!moving){
+	} else if(!playerObj->moving){
 		setAnimation(playerObj->animation, idleAnimation, sizeof(idleAnimation)/sizeof(animationFrame));
 	}
 	
@@ -148,10 +168,7 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 }
 
 void updatePlayerInAir(struct entity* ent, double deltaTime){
-	playerObj->pos.x += playerObj->vel.x * deltaTime;
-	playerObj->pos.y += playerObj->vel.y * deltaTime;
-	
-	bool moving = false;
+	commonPhysicsCheck(ent, deltaTime);
 	
 	if(playerObj->jumpTimer > 0.0){
 		playerObj->jumpTimer -= deltaTime * 0.001; // converting milliseconds to seconds
@@ -161,21 +178,9 @@ void updatePlayerInAir(struct entity* ent, double deltaTime){
 		playerObj->jumpTimer = 0.05; // in seconds
 	}
 	
-	if(keys[LEFT].held) {
-		playerObj->facingLeft = true;
-		playerObj->vel.x = -1;
-		moving = true;
-	} else if(keys[RIGHT].held) {
-		playerObj->facingLeft = false;
-		playerObj->vel.x =  1;
-		moving = true;
-	} else {
-		playerObj->vel.x =  0;
-	}
-	
-	if(moving && playerObj->animation->frames != runAnimation){
+	if(playerObj->moving && playerObj->animation->frames != runAnimation){
 		setAnimation(playerObj->animation, runAnimation, sizeof(runAnimation)/sizeof(animationFrame));
-	} else if(!moving){
+	} else if(!playerObj->moving){
 		setAnimation(playerObj->animation, idleAnimation, sizeof(idleAnimation)/sizeof(animationFrame));
 	}
 	

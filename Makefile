@@ -1,7 +1,7 @@
 CC = gcc
 SHELL = /bin/bash
 LIBS = -lSDL2 -lSDLmain -lSDL2_ttf -lSDL2_mixer -lSDL2_image -lm
-CFLAGS = -Wall -Wpedantic -Wextra -O2 
+CFLAGS = -Wall -Wpedantic -Wextra -O2
 INCLUDE = -Isrc/game -Isrc/game/gameStates -Isrc/engine
 NAME = SDL-thing
 SOURCES = ${wildcard src/game/*.c} ${wildcard src/engine/*.c} ${wildcard src/game/gameStates/*.c}

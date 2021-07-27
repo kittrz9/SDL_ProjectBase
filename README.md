@@ -49,6 +49,7 @@ It should work by just doing `make` in the command line since it's not a really 
 `Linux to Windows cross compiling`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
+`ciumgui integration (https://github.com/cimgui/cimgui)`<br>
 `Sequencer and file format or whatever to play music with the synthesizer`<br>
 `Optimize text rendering`<br>
 `Fix entityNOP compiler errors when actually used`<br>

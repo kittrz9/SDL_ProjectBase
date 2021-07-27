@@ -15,6 +15,7 @@ typedef struct {
 	
 	// Probably a really dumb way to draw the character looking a specific direction when moving
 	bool facingLeft;
+	bool moving;
 } playerStruct;
 
 struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, float h);
