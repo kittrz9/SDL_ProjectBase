@@ -1,9 +1,11 @@
 #include "gameStateRunning.h"
 
+#include "gameStates.h"
 #include "text.h"
 #include "entity.h"
 #include "audio.h"
 #include "controls.h"
+#include "player.h"
 
 // Could probably change this to an enum
 const float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
@@ -19,6 +21,11 @@ synthInstrument inst = {
 	},
 	.synth = synthSine,
 };
+
+void startGameStateRunning(SDL_Window* window, SDL_Renderer* renderer){
+	// Returns a pointer to the player but does nothing with it lmao
+	createPlayer(renderer, 50, 50, 100, 100);
+}
 
 int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
@@ -47,6 +54,10 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 				}
 			}
 		}
+	}
+	
+	if(keys[EXIT].held) {
+		running = false;
 	}
 	
 	// Draw the framerate counter

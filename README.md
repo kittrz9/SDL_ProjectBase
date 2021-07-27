@@ -24,9 +24,9 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 `defines.h` is where defines that can be used in other files are.<br>
 
 ### src/game/ directory
-`gameLoop.c` is where the while loop that always runs while the game is running. Probably should be renamed since the <br>
+`gameLoop.c` is where the while loop that always runs while the game is running. Probably should be renamed since the game state thing handles game loops instead of this, while this handles actually calling the function for the game state.<br>
 
-The `gameStates` directory is where source files with functions that will be called every game loop. The game states will need to be included in the `gameStates.h` file to be used. (Should probably be changed somehow to be a bit easier to use)<br>
+The `gameStates` directory is where source files with functions that will be called every game loop will be. The game states will need to be included in the `gameStates.h` file to be used. (Should probably be changed somehow to be a bit easier to use)<br>
 
 `controls.h` and `controls.c` are where the controls used in game are defined (in `controls.h`) and initialized (in `contorls.c`).
 
