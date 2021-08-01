@@ -6,7 +6,7 @@ gameState* currentState;
 bool running = true;
 
 
-void startGameState(SDL_Window* window, SDL_Renderer* renderer, gameState* newState){
-	(*(newState->startState))(window, renderer);
+void initGameState(SDL_Window* window, SDL_Renderer* renderer, gameState* newState){
+	(*(newState->initState))(window, renderer);
 	currentState = newState;
 }

@@ -16,7 +16,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 	double deltaTime = 0;
 	
 	initControls();
-	startGameState(screen, renderer, &gameStateRunning);
+	initGameState(screen, renderer, &gameStateRunning);
 	
 	while(running){
 		// Decrement the pressed timer for each key if they're being pressed

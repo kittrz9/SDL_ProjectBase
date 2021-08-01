@@ -83,28 +83,25 @@ void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
 	return;
 }
 
-// feels kinda dumb to have a function just for this but if both update functions need to play the same sound it probably shouldn't just reuse the same code
-void playJumpSound(){
-	synthInstrument instrument = {
-		.envelope = {
-			.attack = 0.01,
-			.decay = 0.05f,
-			.sustain = 0.8f,
-			
-			.release = 0.2f,
-		},
-		.synth = synthSine,
-	};
+// jump sound data
+const synthInstrument jumpSndInstr = {
+	.envelope = {
+		.attack = 0.01,
+		.decay = 0.05f,
+		.sustain = 0.8f,
+		
+		.release = 0.2f,
+	},
+	.synth = synthSine,
+};
+const synthData jumpSndData = {
+	.startFreq = 220.0,
+	.endFreq = 440.0,
+	.volume = 1.0,
+	.length = 0.05f,
+	.instrument = &jumpSndInstr,
+};
 
-	synthData data = {
-		.startFreq = 220.0,
-		.endFreq = 440.0,
-		.volume = 1.0,
-		.length = 0.05f,
-		.instrument = &instrument,
-	};
-	playSynth(&data);
-}
 
 void playerBoundaryCheck(struct entity* ent){
 	if(playerObj->pos.x < 0) {playerObj->pos.x = 0;}
@@ -150,7 +147,7 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 	commonPhysicsCheck(ent, deltaTime);
 	
 	if(keys[UP].pressedTimer > 0.0){
-		playJumpSound();
+		playSynth(&jumpSndData);
 		playerObj->vel.y = -2;
 		ent->update = updatePlayerInAir;
 	}
@@ -191,7 +188,7 @@ void updatePlayerInAir(struct entity* ent, double deltaTime){
 	if(playerObj->pos.y < HEIGHT - playerObj->size.y){
 		playerObj->vel.y += GRAVITY * deltaTime;
 	} else if(playerObj->jumpTimer > 0.0) {
-		playJumpSound();
+		playSynth(&jumpSndData);
 		playerObj->pos.y = HEIGHT - playerObj->size.y;
 		playerObj->vel.y = -2;
 	} else {

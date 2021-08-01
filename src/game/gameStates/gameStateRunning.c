@@ -22,7 +22,7 @@ synthInstrument inst = {
 	.synth = synthSine,
 };
 
-void startGameStateRunning(SDL_Window* window, SDL_Renderer* renderer){
+void initGameStateRunning(SDL_Window* window, SDL_Renderer* renderer){
 	// Returns a pointer to the player but does nothing with it lmao
 	createPlayer(renderer, 50, 50, 100, 100);
 }
@@ -62,7 +62,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	// Draw the framerate counter
 	sprintf(formatStr, "FPS: %.5f", (1/(deltaTime/1000)));
-	drawText(renderer, formatStr, SDL_Color_White, 0, 0, 2.0f);
+	drawText(renderer, formatStr, SDL_Color_White, 0, 0, 1.0f);
 	
 	return 0;
 }
