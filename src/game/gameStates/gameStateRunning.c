@@ -12,7 +12,7 @@ const float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 
 Uint8 scaleIndex = 0;
 const synthFunc synths[] = { synthSine, synthSquare, synthSaw, synthTriangle, synthNoise };
 Uint8 synthIndex = 0;
-synthInstrument inst = {
+synthInstrument sndInstr = {
 	.envelope = {
 		.attack = 0.05f,
 		.decay = 0.05f,
@@ -20,6 +20,13 @@ synthInstrument inst = {
 		.release = 0.5f,
 	},
 	.synth = synthSine,
+};
+synthData sndData = {
+	.startFreq = cMajorScale[0],
+	.endFreq = 0,
+	.volume = 1.0,
+	.length = 0.2f,
+	.instrument = &sndInstr,
 };
 
 void initGameStateRunning(SDL_Window* window, SDL_Renderer* renderer){
@@ -36,15 +43,9 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	}
 	
 	if(keys[PLAY_SOUND].pressedTimer > 0.0){
-		inst.synth = synths[synthIndex];
-		synthData data = {
-			.startFreq = cMajorScale[scaleIndex],
-			.endFreq = 0,
-			.volume = 1.0,
-			.length = 0.2f,
-			.instrument = &inst,
-		};
-		if(playSynth(&data)) {
+		sndInstr.synth = synths[synthIndex];
+		sndData.startFreq = cMajorScale[scaleIndex];
+		if(playSynth(&sndData)) {
 			scaleIndex++;
 			if(scaleIndex >= sizeof(cMajorScale)/sizeof(float)) { 
 				scaleIndex = 0; 
