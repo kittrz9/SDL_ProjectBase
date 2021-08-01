@@ -125,5 +125,5 @@ Uint16 synthSaw(float time){
 }
 
 Uint16 synthTriangle(float time){
-	return (Uint16)((time < PI ? ((time/PI)*OFFSET*2) : (OFFSET*2 - (time/PI)) ));
+	return (Uint16)((time < PI ? ((time/PI)*OFFSET*2) : ((OFFSET*2) - ((time/PI)*OFFSET*2)) ));
 }
