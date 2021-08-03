@@ -42,11 +42,19 @@ I think the only thing you really need is SDL2 and other SDL2 libraries like SDL
 It should work by just doing `make` in the command line since it's not a really complex project lmao<br>
 `make debug` includes debug stuff for stuff like gdb<br>
 
+There is kinda linux to windows cross compiling but it's not 100% working right now I think (I tried testing it with wine and the synth doesn't seem to work properly, it's like slowed down a ton. also the framerate was like halved but idk if that's because of how it was compiled or because of running it through wine) but it's there. To compile to windows you'll need to install mingw, find all the weird files and move them to your lib and include directories for mingw, and then find all the dlls you need for those to work, move all those dlls into wherever the exe is being build (should probably have a build directory at this point lmao), compile with `make windows` and MAYBE it will work. I cannot guarentee it. Getting it to compile felt like a nightmare.<br>
+
+links to all the SDL libraries:<br>
+https://www.libsdl.org/download-2.0.php <br>
+https://www.libsdl.org/projects/SDL_image/ <br>
+https://www.libsdl.org/projects/SDL_ttf/ <br>
+https://www.libsdl.org/projects/SDL_mixer/ <br>
+
 ---
 
 ## Todo:
 
-`Linux to Windows cross compiling`<br>
+`fix Linux to Windows cross compiling`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
 `ciumgui integration (https://github.com/cimgui/cimgui)`<br>
@@ -54,9 +62,9 @@ It should work by just doing `make` in the command line since it's not a really 
 `Optimize text rendering`<br>
 `Fix entityNOP compiler errors when actually used`<br>
 `Make the makefile not garbage`<br>
-`Move stuff like headers into an include directory`<br>
 `Add a config file thing (Probably with like XML or something)`<br>
 `Multithreading?`<br>
+`maybe be able to build for the web with emscriptem lmao`<br>
 `More types in types.h`<br>
 `Maybe start using CMake?`<br>
 `Controller support`<br>

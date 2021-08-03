@@ -1,6 +1,6 @@
 CC = gcc
 SHELL = /bin/bash
-LIBS = -lSDL2 -lSDLmain -lSDL2_ttf -lSDL2_mixer -lSDL2_image -lm
+LIBS = -lSDL2main -lSDL2 -lSDL2_ttf -lSDL2_mixer -lSDL2_image -lm
 CFLAGS = -Wall -Wpedantic -Wextra -O2
 INCLUDE = -Isrc/game -Isrc/game/gameStates -Isrc/engine
 NAME = SDL-thing
@@ -15,6 +15,10 @@ ${NAME}: ${SOURCES} ${OBJS}
 
 debug: ${SOURCES}
 	$(CC) $(CFLAGS) $(INCLUDE) -g $(SOURCES) $(LDFLAGS) -o ${NAME}-debug $(LIBS)
+
+# why the fuck does cross compiling have to be such a nightmare lmao this doesn't even fully work
+windows: ${SOURCES}
+	i686-w64-mingw32-gcc $(SOURCES) $(CFLAGS) $(INCLUDE) $(LDFLAGS) -o ${NAME}-windows.exe -lmingw32 $(LIBS)
 
 all: ${NAME} debug
 
