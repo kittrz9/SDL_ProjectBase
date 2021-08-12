@@ -51,6 +51,8 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	playerObj->pos.y = y;
 	playerObj->size.x = w;
 	playerObj->size.y = h;
+	playerObj->vel.x = 0;
+	playerObj->vel.y = 0;
 	
 	playerObj->jumpTimer = 0.0f;
 	
@@ -62,6 +64,7 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	playerObj->animation->nextAnim = NULL;
 	
 	playerObj->moving = false;
+	playerObj->facingLeft = false;
 	
 	ent->draw = drawPlayer;
 	ent->update = updatePlayerInAir;
@@ -70,11 +73,12 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 }
 
 void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
-	SDL_Rect drawRect;
-	drawRect.x = playerObj->pos.x;
-	drawRect.y = playerObj->pos.y;
-	drawRect.w = playerObj->size.x;
-	drawRect.h = playerObj->size.y;
+	SDL_Rect drawRect = {
+		.x = playerObj->pos.x,
+		.y = playerObj->pos.y,
+		.w = playerObj->size.x,
+		.h = playerObj->size.y,
+	};
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	// REALLY need to change this so I don't have to have this massive line of code just because I'm accessing pointers to structs in pointers from structs from pointers lmao
@@ -84,7 +88,8 @@ void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
 }
 
 // jump sound data
-const synthInstrument jumpSndInstr = {
+// having these as const gives the "disregards const qualifier" warning
+synthInstrument jumpSndInstr = {
 	.envelope = {
 		.attack = 0.01,
 		.decay = 0.05f,
@@ -94,7 +99,7 @@ const synthInstrument jumpSndInstr = {
 	},
 	.synth = synthSine,
 };
-const synthData jumpSndData = {
+synthData jumpSndData = {
 	.startFreq = 220.0,
 	.endFreq = 440.0,
 	.volume = 1.0,

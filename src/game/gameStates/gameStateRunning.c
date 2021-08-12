@@ -1,5 +1,7 @@
 #include "gameStateRunning.h"
 
+#include <stdio.h>
+
 #include "gameStates.h"
 #include "text.h"
 #include "entity.h"
@@ -29,7 +31,7 @@ synthData sndData = {
 	.instrument = &sndInstr,
 };
 
-void initGameStateRunning(SDL_Window* window, SDL_Renderer* renderer){
+void initGameStateRunning(UNUSED SDL_Window* window, SDL_Renderer* renderer){
 	// Returns a pointer to the player but does nothing with it lmao
 	createPlayer(renderer, 50, 50, 100, 100);
 }

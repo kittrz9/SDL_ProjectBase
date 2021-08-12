@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+#include <stdio.h>
+
 // Printf needs the pointer to be a void* to not get a warning with the -Wall option
 #define free(x) printf("Freeing %p\n", (void*)x); free(x); printf("Done\n");
 

@@ -18,7 +18,7 @@ debug: ${SOURCES}
 
 # why the fuck does cross compiling have to be such a nightmare lmao this doesn't even fully work
 windows: ${SOURCES}
-	i686-w64-mingw32-gcc $(SOURCES) $(CFLAGS) $(INCLUDE) $(LDFLAGS) -o ${NAME}-windows.exe -lmingw32 $(LIBS)
+	i686-w64-mingw32-gcc $(CFLAGS) $(INCLUDE) -g $(SOURCES) $(LDFLAGS) -o ${NAME}-windows.exe -lmingw32 $(LIBS)
 
 all: ${NAME} debug
 

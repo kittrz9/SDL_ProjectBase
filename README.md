@@ -55,6 +55,7 @@ https://www.libsdl.org/projects/SDL_mixer/ <br>
 ## Todo:
 
 `fix Linux to Windows cross compiling`<br>
+`make stuff not as dependant on SDL in case I want to be able to use other graphics libraries or port to other platforms that don't have SDL2`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
 `ciumgui integration (https://github.com/cimgui/cimgui)`<br>

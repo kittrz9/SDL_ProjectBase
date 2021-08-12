@@ -1,12 +1,12 @@
 #include "audio.h"
 
 #include <SDL2/SDL.h>
-#include <types.h>
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
-
+#include "defines.h"
 
 typedef struct {
 	Mix_Chunk* chunk;
@@ -81,11 +81,11 @@ bool playSynth(synthData* data){
 		}
 		
 		// Frequency also has to be divided by 8 for some reason to get the actual frequency, idk why
-		funcTime += freq/8 * PI2 / MIX_DEFAULT_FREQUENCY;
+		funcTime += (freq/8) * (PI2 / MIX_DEFAULT_FREQUENCY);
 		if(funcTime >= PI2) { funcTime -= PI2; }
 		
 		// This feels really really stupid lmao, at least one of these has to be cast to a float so the division doesn't return an int
-		time = ((float)i/(float)size)*(data->length + envelope.release);
+		time = ((double)i/(double)size)*(data->length + envelope.release);
 	}
 	
 	Mix_Chunk* chunk = malloc(sizeof(Mix_Chunk));
@@ -114,7 +114,7 @@ Uint16 synthSquare(float time){
 	return (Uint16)(time < PI ? 0 : OFFSET*2);
 }
 
-// Should probably find a way to make this change the pitch depending on the time
+// Should probably find a way to make this change the pitch depending on the time, probably with like frequency modulation
 Uint16 synthNoise(UNUSED float time){
 	return (Uint16)(rand());
 }
