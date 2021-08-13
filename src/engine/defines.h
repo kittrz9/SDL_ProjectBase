@@ -13,6 +13,6 @@
 #endif
 
 #define PI  M_PI
-#define PI2 PI*2
+#define PI2 (PI*2)
 
 #endif

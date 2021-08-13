@@ -7,7 +7,7 @@ NAME = SDL-thing
 SOURCES = ${wildcard src/game/*.c} ${wildcard src/engine/*.c} ${wildcard src/game/gameStates/*.c}
 OBJS = ${subst src/, obj/, ${subst .c,.o,${SOURCES}}}
 
-${NAME}: ${SOURCES} ${OBJS}
+${NAME}: ${SOURCES}
 	# This is probably a very stupid way to get this to work
 	-rm ${subst src/,obj/,${subst .c,.o,$?}}
 	make ${subst src/,obj/,${subst .c,.o,$?}}
