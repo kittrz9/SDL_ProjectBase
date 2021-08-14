@@ -45,8 +45,8 @@ bool playSynth(synthData* data){
 	}
 	
 	
-	// Has to be multiplied by 16 because the audio format is U16 I think
-	size_t size = (data->length + envelope.release) * MIX_DEFAULT_FREQUENCY*16;
+	// has to be multiplied by 4 for some reason, I don't fully understand why
+	size_t size = (data->length + envelope.release) * MIX_DEFAULT_FREQUENCY*4;
 	Uint16* audioBuffer = malloc(size * sizeof(Uint16));
 	
 	// Having 2 variables with time in their name is probably bad and confusing but I can't think of something better for either of them. funcTime is what gets passed to the synth function
@@ -58,7 +58,7 @@ bool playSynth(synthData* data){
 		audioBuffer[i] = data->instrument->synth(funcTime) * amplitude * data->volume;
 		if(data->endFreq != 0 && time < data->length){
 			// Really ugly code, dividing by what the size would be without taking into account release time since I don't want to have the frequency sweep during that time
-			freq += (data->endFreq - data->startFreq)/(data->length * MIX_DEFAULT_FREQUENCY*16);
+			freq += (data->endFreq - data->startFreq)/(data->length * MIX_DEFAULT_FREQUENCY*4);
 		}
 		
 		if(time <= envelope.attack){
@@ -80,8 +80,8 @@ bool playSynth(synthData* data){
 			amplitude = 1;
 		}
 		
-		// Frequency also has to be divided by 8 for some reason to get the actual frequency, idk why
-		funcTime += (freq/8) * (PI2 / MIX_DEFAULT_FREQUENCY);
+		// Frequency also has to be divided by 2 for some reason to get the actual frequency, idk why
+		funcTime += (freq/2) * (PI2 / MIX_DEFAULT_FREQUENCY);
 		if(funcTime >= PI2) { funcTime -= PI2; }
 		
 		// This feels really really stupid lmao, at least one of these has to be cast to a float so the division doesn't return an int

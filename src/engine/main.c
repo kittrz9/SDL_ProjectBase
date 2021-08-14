@@ -20,7 +20,8 @@
 int main(UNUSED int argc, UNUSED char** argv){
 	init(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER | SDL_INIT_AUDIO));
 	init(TTF_Init());
-	init(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, AUDIO_U16, AUDIO_CHANNELS_AMOUNT, 256)); // having the chunk size at 2048 was making the sounds seem to play later than they should, and reducing it to 256 didn't make it sound any worse. I think I put 2048 because it was half of what the SDL_mixer docs recommended
+	// for some reason I set the channels parameter set wrong, I thought it was how many audio channels were allocated and not whether or not it was stereo or mono. the docs literally say "This has nothing to do with mixing channels." lmao why am I so stupid
+	init(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, AUDIO_U16LSB, 2, 256)); // having the chunk size at 2048 was making the sounds seem to play later than they should, and reducing it to 256 didn't make it sound any worse. I think I put 2048 because it was half of what the SDL_mixer docs recommended
 	
 	// Probably shouldn't be hardcoded to check for this specific font
 	font = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);

@@ -42,7 +42,7 @@ I think the only thing you really need is SDL2 and other SDL2 libraries like SDL
 It should work by just doing `make` in the command line since it's not a really complex project lmao<br>
 `make debug` includes debug stuff for stuff like gdb<br>
 
-There is kinda linux to windows cross compiling but it's not 100% working right now I think (I tried testing it with wine and the synth doesn't seem to work properly, it's like slowed down a ton. also the framerate was like halved but idk if that's because of how it was compiled or because of running it through wine) but it's there. To compile to windows you'll need to install mingw, find all the weird files and move them to your lib and include directories for mingw, and then find all the dlls you need for those to work, move all those dlls into wherever the exe is being build (should probably have a build directory at this point lmao), compile with `make windows` and MAYBE it will work. I cannot guarentee it. Getting it to compile felt like a nightmare.<br>
+To compile for windows from linux you need to install mingw (most linux package managers have it I think), get all of the SDL libraries linked below, install them and put all the dlls needed for them to work in the directory the executable will be in (I should probably start using a build directory at this point lmao) and run `make windows`. I've gotten it to work running through Wine but the framerate seeems pretty much halved and idk if that's because of running it through Wine or if I'm just compiling it wrong or something. I have not tested this on actual Windows or even through a VM or anything yet, but I'm assuming it will work.<br>
 
 links to all the SDL libraries:<br>
 https://www.libsdl.org/download-2.0.php <br>
@@ -54,7 +54,6 @@ https://www.libsdl.org/projects/SDL_mixer/ <br>
 
 ## Todo:
 
-`fix Linux to Windows cross compiling`<br>
 `make stuff not as dependant on SDL in case I want to be able to use other graphics libraries or port to other platforms that don't have SDL2`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
