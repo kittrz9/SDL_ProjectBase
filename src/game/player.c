@@ -56,7 +56,9 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	
 	playerObj->jumpTimer = 0.0f;
 	
-	playerObj->animation->texture = SDL_CreateTextureFromSurface(renderer, IMG_Load("res/test.png"));
+	SDL_Surface* tempSurface = IMG_Load("res/test.png");
+	playerObj->animation->texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+	SDL_FreeSurface(tempSurface);
 	playerObj->animation->timer = 0.0f;
 	playerObj->animation->index = 0;
 	playerObj->animation->frames = idleAnimation;
@@ -68,8 +70,18 @@ struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, f
 	
 	ent->draw = drawPlayer;
 	ent->update = updatePlayerInAir;
+	
+	ent->destructor = destroyPlayer;
 	pushToEntityList(ent);
 	return ent;
+}
+
+void destroyPlayer(struct entity* ent){
+	SDL_DestroyTexture(playerObj->animation->texture);
+	free(playerObj->animation);
+	
+	
+	return;
 }
 
 void drawPlayer(struct entity* ent, SDL_Renderer* renderer){

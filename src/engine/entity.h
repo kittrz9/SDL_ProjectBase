@@ -18,6 +18,9 @@ struct entity {
 	// Could probably have these function pointers be typedefs so they're more readable I guess but then the parameters would need the struct entity thing to be defined before them, but the struct entity needs the typedefs before it, so idk how I'd get that to work
 	void (*draw)(struct entity*, SDL_Renderer*);
 	void (*update)(struct entity*, double);
+	
+	// I've slowly and pretty much unintentionally recreated C++ classes lmao
+	void (*destructor)();
 };
 
 // For stuff that either doesn't need to be drawn or updated I guess

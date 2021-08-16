@@ -51,6 +51,12 @@ void removeEntity(struct entity* ent){
 	
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
 		if(entListCurrent->ent == ent){
+			// free entity
+			(*ent->destructor)();
+			free(ent->object);
+			free(ent);
+			
+			// free the entity list node
 			struct entListNode* temp;
 			// Handling the entities at the ends of the list specifically because they're weird
 			// Could probably do something much better than this but whatever
@@ -62,7 +68,7 @@ void removeEntity(struct entity* ent){
 				return;
 			}
 			if(entListCurrent == entListTail){
-				entListHead->prev->next = NULL;
+				entListTail->prev->next = NULL;
 				temp = entListTail->prev;
 				free(entListTail);
 				entListTail = temp;
