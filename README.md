@@ -21,6 +21,8 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
+`renderer.h` has the pointers to the current SDL_Renderer and SDL_Window. This should be included when drawing to the screen.
+
 `defines.h` is where defines that can be used in other files are.<br>
 
 ### src/game/ directory
@@ -57,11 +59,12 @@ https://www.libsdl.org/projects/SDL_mixer/ <br>
 `make stuff not as dependant on SDL in case I want to be able to use other graphics libraries or port to other platforms that don't have SDL2`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
+`resource manager`<br>
 `ciumgui integration (https://github.com/cimgui/cimgui)`<br>
 `Sequencer and file format or whatever to play music with the synthesizer`<br>
 `Optimize text rendering`<br>
+`change the name to something better`<br>
 `Fix entityNOP compiler errors when actually used`<br>
-`Make the makefile not garbage`<br>
 `Add a config file thing (Probably with like XML or something)`<br>
 `Multithreading?`<br>
 `maybe be able to build for the web with emscriptem lmao`<br>

@@ -10,6 +10,7 @@
 #include "text.h"
 #include "types.h"
 #include "audio.h"
+#include "renderer.h"
 
 #define init(x) if(x < 0) {\
 			printf(#x " failed: %s\n", SDL_GetError());\
@@ -38,10 +39,9 @@ int main(UNUSED int argc, UNUSED char** argv){
 	Mix_ChannelFinished(freeAudioChannelChunk);
 
 	// Window stuff
-	SDL_Window* screen = NULL;
-	SDL_Renderer* renderer = NULL;
-	SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &screen, &renderer);
-	if(!screen) {
+	// window and renderer defined in renderer.h and renderer.c
+	SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &window, &renderer);
+	if(!window) {
 		//printf("Couldn't create window\n");
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Couldn't create window: %s\n", SDL_GetError());
 		return 1;
@@ -50,10 +50,10 @@ int main(UNUSED int argc, UNUSED char** argv){
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Couldn't create renderer: %s\n", SDL_GetError());
 		return 1;
 	}
-	SDL_SetWindowTitle(screen, "bruh");
+	SDL_SetWindowTitle(window, "bruh");
 
 	// Main loop
-	gameLoop(screen, renderer);
+	gameLoop();
 
 	// Free resources and end
 	free(formatStr);
@@ -64,7 +64,7 @@ int main(UNUSED int argc, UNUSED char** argv){
 	Mix_CloseAudio();
 	// Quit SDL
 	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(screen);
+	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;
 }

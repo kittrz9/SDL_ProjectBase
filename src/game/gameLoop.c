@@ -8,15 +8,16 @@
 #include "controls.h"
 #include "text.h"
 #include "audio.h"
+#include "renderer.h"
 
 // I don't really remember exactly why I have the gameloop seperate from the main function besides like having the SDL initialization stuff being seperate from everything else
-int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
+int gameLoop() {
 	SDL_Event event;
 	Uint64 lastTime = SDL_GetPerformanceCounter(), currentTime;
 	double deltaTime = 0;
 	
 	initControls();
-	initGameState(screen, renderer, &gameStateRunning);
+	initGameState(&gameStateRunning);
 	
 	while(running){
 		// Decrement the pressed timer for each key if they're being pressed
@@ -62,7 +63,7 @@ int gameLoop(UNUSED SDL_Window* screen, SDL_Renderer* renderer) {
 		SDL_RenderClear(renderer);
 		
 		// Run the current game state
-		if((*(currentState->stateLoop))(screen, renderer, deltaTime)) {running = false;}
+		if((*(currentState->stateLoop))(deltaTime)) {running = false;}
 
 		// Render everything to the screen
 		SDL_RenderPresent(renderer);

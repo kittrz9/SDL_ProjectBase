@@ -5,6 +5,7 @@
 #include "defines.h"
 #include "animation.h"
 #include "audio.h"
+#include "renderer.h"
 
 #define playerObj ((playerStruct*)(ent->object))
 
@@ -42,7 +43,7 @@ animationFrame idleAnimation[] = {
 	}
 };
 
-struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, float h){
+struct entity* createPlayer(float x, float y, float w, float h){
 	// Create player entity
 	struct entity* ent = malloc(sizeof(struct entity));
 	ent->object = malloc(sizeof(playerStruct));
@@ -84,7 +85,7 @@ void destroyPlayer(struct entity* ent){
 	return;
 }
 
-void drawPlayer(struct entity* ent, SDL_Renderer* renderer){
+void drawPlayer(struct entity* ent){
 	SDL_Rect drawRect = {
 		.x = playerObj->pos.x,
 		.y = playerObj->pos.y,

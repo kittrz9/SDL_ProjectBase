@@ -4,8 +4,8 @@
 #include <SDL2/SDL.h>
 #include "gameStates.h"
 
-void initGameStateRunning(SDL_Window*, SDL_Renderer*);
-int runGameStateRunning(SDL_Window* screen, SDL_Renderer* renderer, float deltaTime);
+void initGameStateRunning();
+int runGameStateRunning(float deltaTime);
 
 static const gameState gameStateRunning = {
 	.initState = initGameStateRunning,

@@ -18,9 +18,9 @@ typedef struct {
 	bool moving;
 } playerStruct;
 
-struct entity* createPlayer(SDL_Renderer* renderer, float x, float y, float w, float h);
+struct entity* createPlayer(float x, float y, float w, float h);
 
-void drawPlayer(struct entity* ent, SDL_Renderer* renderer);
+void drawPlayer(struct entity* ent);
 void destroyPlayer();
 void updatePlayerInAir(struct entity* ent, double deltaTime);
 void updatePlayerOnGround(struct entity* ent, double deltaTime);

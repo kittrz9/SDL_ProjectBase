@@ -9,6 +9,8 @@
 #include "controls.h"
 #include "player.h"
 
+#include "renderer.h"
+
 // Could probably change this to an enum
 const float cMajorScale[] = { 261.6256, 293.6648, 329.6276, 349.2282, 391.9954, 440.0, 493.8833, 523.2511 };
 Uint8 scaleIndex = 0;
@@ -31,15 +33,15 @@ synthData sndData = {
 	.instrument = &sndInstr,
 };
 
-void initGameStateRunning(UNUSED SDL_Window* window, SDL_Renderer* renderer){
+void initGameStateRunning(){
 	// Returns a pointer to the player but does nothing with it lmao
-	createPlayer(renderer, 50, 50, 100, 100);
+	createPlayer(50, 50, 100, 100);
 }
 
-int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float deltaTime){
+int runGameStateRunning(float deltaTime){
 	for(entListCurrent = entListHead; entListCurrent != NULL; entListCurrent = entListCurrent->next){
 		// Call the entity's draw function
-		(*entListCurrent->ent->draw)(entListCurrent->ent, renderer);
+		(*entListCurrent->ent->draw)(entListCurrent->ent);
 		// Call the entity's update function
 		(*entListCurrent->ent->update)(entListCurrent->ent, deltaTime);
 	}
@@ -65,7 +67,7 @@ int runGameStateRunning(UNUSED SDL_Window* screen, SDL_Renderer* renderer, float
 	
 	// Draw the framerate counter
 	sprintf(formatStr, "FPS: %.5f", (1/(deltaTime/1000)));
-	drawText(renderer, formatStr, SDL_Color_White, 0, 0, 1.0f);
+	drawText(formatStr, SDL_Color_White, 0, 0, 1.0f);
 	
 	return 0;
 }

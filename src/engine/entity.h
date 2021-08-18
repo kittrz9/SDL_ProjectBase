@@ -16,7 +16,7 @@ struct entity {
 	// Having function pointers does kinda feel like I'm just creating C++ classes but in C but I feel like this could be better since you could probably make a sort of state machine by changing the update function pointer (i.e. changing it from like playerIdle to playerWalk or something when pressing left/right if you really want to have everything be seperate functions)
 	// Also might be a bad idea since it would lead to a lot of repeated code probably
 	// Could probably have these function pointers be typedefs so they're more readable I guess but then the parameters would need the struct entity thing to be defined before them, but the struct entity needs the typedefs before it, so idk how I'd get that to work
-	void (*draw)(struct entity*, SDL_Renderer*);
+	void (*draw)(struct entity*);
 	void (*update)(struct entity*, double);
 	
 	// I've slowly and pretty much unintentionally recreated C++ classes lmao

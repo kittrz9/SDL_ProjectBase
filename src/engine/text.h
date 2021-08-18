@@ -11,7 +11,7 @@ extern char* formatStr; // This is very dumb
 
 extern TTF_Font* font;
 
-void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, float scaling);
-void drawTextCentered(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, float scaling);
+void drawText(char* str, SDL_Color col, int x, int y, float scaling);
+void drawTextCentered(char* str, SDL_Color col, int x, int y, float scaling);
 
 #endif

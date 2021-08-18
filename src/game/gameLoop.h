@@ -3,6 +3,6 @@
 
 #include <SDL2/SDL.h>
 
-int gameLoop(SDL_Window* screen, SDL_Renderer* renderer);
+int gameLoop();
 
 #endif

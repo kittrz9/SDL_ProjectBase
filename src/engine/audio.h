@@ -12,7 +12,6 @@
 void freeAudioChannelChunk(int channel);
 
 // Returns the value of the synth at the time provided (like sine(pi) would be 0)
-// Compiler gives a bunch of warnings because of this function pointer typedef that I can't figure out how to fix
 typedef Uint16 (*synthFunc)(float);
 
 // Where the envelope and synth function to be used with the synthesizer is defined

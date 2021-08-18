@@ -3,12 +3,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
+#include "renderer.h"
+
 TTF_Font* font;
 
 char* formatStr;
 
 // Should probably optimize this or something
-void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, float scaling){
+void drawText(char* str, SDL_Color col, int x, int y, float scaling){
 	// This is probably what's making this really inneficient
 	// There's probably a better way to draw text than just constantly creating surfaces and textures every frame
 	// But I'm too stupid to figure this out
@@ -32,7 +34,7 @@ void drawText(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, fl
 	SDL_DestroyTexture(texture);
 }
 
-void drawTextCentered(SDL_Renderer* renderer, char* str, SDL_Color col, int x, int y, float scaling){
+void drawTextCentered(char* str, SDL_Color col, int x, int y, float scaling){
 	SDL_Surface* surface = TTF_RenderText_Solid(font, str, col);
 	
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
