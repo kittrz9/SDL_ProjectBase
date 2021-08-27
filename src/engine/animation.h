@@ -2,6 +2,7 @@
 #define ANIMATION_H
 
 #include <SDL2/SDL.h>
+#include "resourceManager.h"
 
 // for like animation using like texture rects
 
@@ -12,7 +13,7 @@ typedef struct {
 } animationFrame;
 
 typedef struct {
-	SDL_Texture* texture;
+	resource* textureResource; // pointer to the resource struct
 	animationFrame* frames;
 	Uint16 length; // length in frames
 	Uint16 index; // where the animation is at now

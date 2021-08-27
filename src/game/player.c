@@ -6,6 +6,7 @@
 #include "animation.h"
 #include "audio.h"
 #include "renderer.h"
+#include "resourceManager.h"
 
 #define playerObj ((playerStruct*)(ent->object))
 
@@ -57,9 +58,7 @@ struct entity* createPlayer(float x, float y, float w, float h){
 	
 	playerObj->jumpTimer = 0.0f;
 	
-	SDL_Surface* tempSurface = IMG_Load("res/test.png");
-	playerObj->animation->texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-	SDL_FreeSurface(tempSurface);
+	playerObj->animation->textureResource = loadResource(RES_TYPE_TEXTURE, "res/test.png");
 	playerObj->animation->timer = 0.0f;
 	playerObj->animation->index = 0;
 	playerObj->animation->frames = idleAnimation;
@@ -78,9 +77,7 @@ struct entity* createPlayer(float x, float y, float w, float h){
 }
 
 void destroyPlayer(struct entity* ent){
-	SDL_DestroyTexture(playerObj->animation->texture);
 	free(playerObj->animation);
-	
 	
 	return;
 }
@@ -95,7 +92,7 @@ void drawPlayer(struct entity* ent){
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 	// REALLY need to change this so I don't have to have this massive line of code just because I'm accessing pointers to structs in pointers from structs from pointers lmao
-	SDL_RenderCopyEx(renderer, playerObj->animation->texture, &playerObj->animation->frames[playerObj->animation->index].rect, &drawRect, 0, NULL, (playerObj->facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
+	SDL_RenderCopyEx(renderer, playerObj->animation->textureResource->pointer, &playerObj->animation->frames[playerObj->animation->index].rect, &drawRect, 0, NULL, (playerObj->facingLeft ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE));
 	
 	return;
 }
