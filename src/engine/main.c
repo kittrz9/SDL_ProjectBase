@@ -11,6 +11,7 @@
 #include "types.h"
 #include "audio.h"
 #include "renderer.h"
+#include "resourceManager.h"
 
 #define init(x) if(x < 0) {\
 			printf(#x " failed: %s\n", SDL_GetError());\
@@ -54,6 +55,9 @@ int main(UNUSED int argc, UNUSED char** argv){
 
 	// Main loop
 	gameLoop();
+	
+	// destroy resources
+	clearResourceList();
 
 	// Free resources and end
 	free(formatStr);

@@ -19,6 +19,8 @@ Entities (defined in `entity.h` and `entity.c`) are things that will be drawn an
 
 `animation.h` has stuff for really basic animation using texture rects<br>
 
+`resourceManager.h` lets you use a resource without constantly loading it into memory. currently only supports loading textures since that's all this kinda example uses, but it is easy to add support for other resource types.
+
 `main.c` is just the main function, pretty much just SDL initialization stuff and calling the game loop function, not really much reason to change it when just making games.<br>
 
 `renderer.h` has the pointers to the current SDL_Renderer and SDL_Window. This should be included when drawing to the screen.
@@ -59,7 +61,6 @@ https://www.libsdl.org/projects/SDL_mixer/ <br>
 `make stuff not as dependant on SDL in case I want to be able to use other graphics libraries or port to other platforms that don't have SDL2`<br>
 `Add music playing`<br>
 `Better synthesizer`<br>
-`resource manager`<br>
 `ciumgui integration (https://github.com/cimgui/cimgui)`<br>
 `Sequencer and file format or whatever to play music with the synthesizer`<br>
 `Optimize text rendering`<br>

@@ -16,4 +16,7 @@ void destroyResource(resource* res);
 
 resource* loadResource(RESOURCE_TYPE type, const char* filePath);
 
+// destroys every loaded resource
+void clearResourceList();
+
 #endif
