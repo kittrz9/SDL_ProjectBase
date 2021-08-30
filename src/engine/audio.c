@@ -71,6 +71,11 @@ bool playSynth(synthData* data){
 			amplitude = (((0 - envelope.sustain)/(envelope.release))*(time - data->length)) + envelope.sustain;
 		}
 		
+		// changes the amplitude depending on the panning of the sound
+		// calculates it for the next one in the buffer so the left one is for the amplitude of the right ear and the right one is for the amplitude of the left ear lmao
+		// also converts the original range of -1 to 1 to 0 to 1 because -1 to 1 is easier to understand when programming the sound
+		amplitude *= (i%2==1?1-(data->panning+1)/2 : (data->panning+1)/2);
+		
 		if(amplitude < 0){
 			printf("%f: %f\n", time, amplitude);
 			amplitude = 0;
@@ -80,7 +85,8 @@ bool playSynth(synthData* data){
 			amplitude = 1;
 		}
 		
-		// Frequency also has to be divided by 2 for some reason to get the actual frequency, idk why
+		// frequency has to be divided by 2 because of the stereo sound
+		// probably will mean this entire thing breaks if I need it to be mono lmao
 		funcTime += (freq/2) * (PI2 / MIX_DEFAULT_FREQUENCY);
 		if(funcTime >= PI2) { funcTime -= PI2; }
 		

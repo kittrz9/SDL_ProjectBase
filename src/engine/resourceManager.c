@@ -32,6 +32,7 @@ resource* loadTexture(const char* filePath){
 }
 
 // array of function pointers for destroying and creating resources
+// has to be in the same order as the enum of resource types
 void (*resourceDestroyingFunctions[RES_TYPE_ENUM_LENGTH]) (resource* res) = {
 	destroyTexture,
 };

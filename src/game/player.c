@@ -162,6 +162,7 @@ void updatePlayerOnGround(struct entity* ent, double deltaTime){
 	commonPhysicsCheck(ent, deltaTime);
 	
 	if(keys[UP].pressedTimer > 0.0){
+		jumpSndData.panning = (((playerObj->pos.x + playerObj->size.x/2) / WIDTH)*2) - 1;
 		playSynth(&jumpSndData);
 		playerObj->vel.y = -2;
 		ent->update = updatePlayerInAir;
