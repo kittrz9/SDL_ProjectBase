@@ -5,7 +5,8 @@
 #include "renderer.h"
 
 typedef struct {
-	char name[30*sizeof(char)];
+	//char name[30*sizeof(char)];
+	char* name;
 	resource* resPointer;
 } resourceListEntry;
 
@@ -46,6 +47,8 @@ void destroyResource(resource* res) {
 			(resourceDestroyingFunctions[res->type])(res);
 			// to have empty entries in the resource list so you don't have to reallocate the array constantly
 			resourceList[i].resPointer = NULL;
+			free(resourceList[i].name);
+			resourceList[i].name = NULL;
 			free(res);
 			return;
 		}
@@ -79,6 +82,7 @@ resource* loadResource(RESOURCE_TYPE type, const char* filePath){
 	}
 	
 	resourceList[resourceIndex].resPointer = res;
+	resourceList[resourceIndex].name = malloc(strlen(filePath) * sizeof(char));
 	strcpy(resourceList[resourceIndex].name, filePath);
 	
 	return res;
@@ -96,6 +100,8 @@ void clearResourceList(){
 		}
 		
 		(resourceDestroyingFunctions[resourceList[i].resPointer->type])(resourceList[i].resPointer);
+		
+		free(resourceList[i].name);
 	}
 	
 	free(resourceList);

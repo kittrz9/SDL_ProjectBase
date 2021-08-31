@@ -43,9 +43,6 @@ Uint16 synthNoise(UNUSED float time);
 Uint16 synthSaw(float time);
 Uint16 synthTriangle(float time);
 
-// Used for the sequencer
-enum synthID {SYNTHSINE, SYNTHSQUARE, SYNTHNOISE, SYNTHSAW, SYNTHTRIANGLE};
-
 // Could probably have music be played using samples but idk
 // I'd have to either seperate the sound and music channels or increase the number of channels
 // I'd probably also need to make either my own sort of file format or like sequencer unless I somehow find a way to just use MIDI lmao
