@@ -44,7 +44,7 @@ void destroyFont(resource* res){
 resource* loadFont(const char* filePath){
 	resource* res = malloc(sizeof(resource));
 	
-	res->pointer = TT F_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
+	res->pointer = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
 	if(res->pointer == NULL) { return NULL; }
 	
 	return res;
@@ -96,7 +96,7 @@ resource* loadResource(RESOURCE_TYPE type, const char* filePath){
 	
 	if(res->pointer == NULL) {
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not open resource with file path %s: %s\n", filePath, SDL_GetError());
-		return -1;
+		return NULL;
 	}
 	
 	if(resourceIndex == -1){
