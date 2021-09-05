@@ -125,7 +125,6 @@ Uint16 synthNoise(UNUSED float time){
 	return (Uint16)(rand());
 }
 
-// These suddenly just kinda broke after the merge, and changing the PI2 to just PI worked somehow????
 Uint16 synthSaw(float time){
 	return (Uint16)(OFFSET*2 - ((time/PI)*OFFSET));
 }

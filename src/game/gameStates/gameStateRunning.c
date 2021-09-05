@@ -8,7 +8,7 @@
 #include "audio.h"
 #include "controls.h"
 #include "player.h"
-
+#include "resourceManager.h"
 #include "renderer.h"
 
 // Could probably change this to an enum
@@ -33,9 +33,13 @@ synthData sndData = {
 	.instrument = &sndInstr,
 };
 
+resource* fpsCounterFontRes;
+
 void initGameStateRunning(){
 	// Returns a pointer to the player but does nothing with it lmao
 	createPlayer(50, 50, 100, 100);
+	
+	fpsCounterFontRes = loadResource(RES_TYPE_FONT, "res/TerminusTTF-4.47.0.ttf");
 }
 
 int runGameStateRunning(float deltaTime){
@@ -67,7 +71,7 @@ int runGameStateRunning(float deltaTime){
 	
 	// Draw the framerate counter
 	sprintf(formatStr, "FPS: %.5f", (1/(deltaTime/1000)));
-	drawText(formatStr, SDL_Color_White, 0, 0, 1.0f);
+	drawText(formatStr, SDL_Color_White, 0, 0, 1.0f, fpsCounterFontRes->pointer);
 	
 	return 0;
 }

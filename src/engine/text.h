@@ -9,9 +9,7 @@ static const SDL_Color SDL_Color_White = {255, 255, 255, 255}; // RGBA format
 
 extern char* formatStr; // This is very dumb
 
-extern TTF_Font* font;
-
-void drawText(char* str, SDL_Color col, int x, int y, float scaling);
-void drawTextCentered(char* str, SDL_Color col, int x, int y, float scaling);
+void drawText(char* str, SDL_Color col, int x, int y, float scaling, TTF_Font* font);
+void drawTextCentered(char* str, SDL_Color col, int x, int y, float scaling, TTF_Font* font);
 
 #endif

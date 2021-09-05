@@ -3,6 +3,7 @@
 
 typedef enum {
 	RES_TYPE_TEXTURE,
+	RES_TYPE_FONT,
 	RES_TYPE_ENUM_LENGTH, // length of enum
 } RESOURCE_TYPE;
 

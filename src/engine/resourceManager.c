@@ -1,6 +1,7 @@
 #include "resourceManager.h" 
 
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "renderer.h"
 
@@ -29,6 +30,23 @@ resource* loadTexture(const char* filePath){
 	res->pointer = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	SDL_FreeSurface(tempSurface);
 	
+	if(res->pointer == NULL) { return NULL; }
+	
+	return res;
+}
+
+void destroyFont(resource* res){
+	TTF_CloseFont(res->pointer);
+	
+	return;
+}
+
+resource* loadFont(const char* filePath){
+	resource* res = malloc(sizeof(resource));
+	
+	res->pointer = TT F_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
+	if(res->pointer == NULL) { return NULL; }
+	
 	return res;
 }
 
@@ -36,9 +54,11 @@ resource* loadTexture(const char* filePath){
 // has to be in the same order as the enum of resource types
 void (*resourceDestroyingFunctions[RES_TYPE_ENUM_LENGTH]) (resource* res) = {
 	destroyTexture,
+	destroyFont,
 };
 resource* (*resourceLoadingFunctions[RES_TYPE_ENUM_LENGTH]) (const char* filePath) = {
 	loadTexture,
+	loadFont,
 };
 
 void destroyResource(resource* res) {
@@ -73,6 +93,11 @@ resource* loadResource(RESOURCE_TYPE type, const char* filePath){
 	
 	resource* res = (*resourceLoadingFunctions[type])(filePath);
 	res->type = type;
+	
+	if(res->pointer == NULL) {
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not open resource with file path %s: %s\n", filePath, SDL_GetError());
+		return -1;
+	}
 	
 	if(resourceIndex == -1){
 		resourceIndex = loadedResources;
