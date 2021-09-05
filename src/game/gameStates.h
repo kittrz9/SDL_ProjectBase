@@ -6,7 +6,8 @@
 
 typedef struct { 
 	void (*initState)(); // function pointer to function that initializes the game state
-	// parameters: pointer to the current window to render to, pointer to the renderer, delta time
+	void (*uninitState)(); // function pointer to function that uninitializes the game state (for like freeing resources and stuff
+	// parameters: delta time
 	int (*stateLoop)(float); // the game loop for this game state that gets run every frame
 } gameState;
 

@@ -61,9 +61,13 @@ resource* (*resourceLoadingFunctions[RES_TYPE_ENUM_LENGTH]) (const char* filePat
 	loadFont,
 };
 
+// look up table for strings corresponding to the type of resource, used for debugging
+const char* typeStrings[RES_TYPE_ENUM_LENGTH] = {"texture", "font"};
+
 void destroyResource(resource* res) {
 	for(unsigned int i = 0; i < loadedResources; i++){
 		if(resourceList[i].resPointer == res){
+			printf("Destroying resource with type %s at %p\n", typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
 			(resourceDestroyingFunctions[res->type])(res);
 			// to have empty entries in the resource list so you don't have to reallocate the array constantly
 			resourceList[i].resPointer = NULL;
@@ -110,6 +114,8 @@ resource* loadResource(RESOURCE_TYPE type, const char* filePath){
 	resourceList[resourceIndex].name = malloc(strlen(filePath) * sizeof(char));
 	strcpy(resourceList[resourceIndex].name, filePath);
 	
+	printf("resource with type %s created at %p\n", typeStrings[type], (void*)res);
+	
 	return res;
 }
 
@@ -124,6 +130,7 @@ void clearResourceList(){
 			continue;
 		}
 		
+		printf("Destroying resource with type %s at %p\n", typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
 		(resourceDestroyingFunctions[resourceList[i].resPointer->type])(resourceList[i].resPointer);
 		
 		free(resourceList[i].name);

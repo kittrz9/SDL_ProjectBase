@@ -5,10 +5,12 @@
 #include "gameStates.h"
 
 void initGameStateRunning();
+void uninitGameStateRunning();
 int runGameStateRunning(float deltaTime);
 
 static const gameState gameStateRunning = {
 	.initState = initGameStateRunning,
+	.uninitState = uninitGameStateRunning,
 	.stateLoop = runGameStateRunning
 };
 

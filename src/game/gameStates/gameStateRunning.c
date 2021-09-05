@@ -34,12 +34,22 @@ synthData sndData = {
 };
 
 resource* fpsCounterFontRes;
+struct entity* player;
 
 void initGameStateRunning(){
-	// Returns a pointer to the player but does nothing with it lmao
-	createPlayer(50, 50, 100, 100);
+	player = createPlayer(50, 50, 100, 100);
 	
 	fpsCounterFontRes = loadResource(RES_TYPE_FONT, "res/TerminusTTF-4.47.0.ttf");
+	
+	return;
+}
+
+void uninitGameStateRunning(){
+	removeEntity(player);
+	
+	destroyResource(fpsCounterFontRes);
+	
+	return;
 }
 
 int runGameStateRunning(float deltaTime){
