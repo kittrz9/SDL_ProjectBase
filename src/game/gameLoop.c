@@ -59,7 +59,7 @@ int gameLoop() {
 		}
 		
 		// Clear the screen/renderer
-		SDL_SetRenderDrawColor(renderer,0,0,0,255);
+		SDL_SetRenderDrawColor(renderer, screenClearColor.r, screenClearColor.g, screenClearColor.b, 255);
 		SDL_RenderClear(renderer);
 		
 		// Run the current game state

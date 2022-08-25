@@ -38,6 +38,7 @@ struct entity* player;
 
 void initGameStateRunning(){
 	player = createPlayer(50, 50, 100, 100);
+	setScreenClearColor(127, 127, 127);
 	
 	fpsCounterFontRes = loadResource(RES_TYPE_FONT, "TerminusTTF-4.47.0.ttf");
 	
