@@ -16,7 +16,7 @@ extern gameState* currentState;
 //extern int (*gameState)(SDL_Window*, SDL_Renderer*, float);
 extern bool running;
 
-void initGameState(gameState* newState);
+void initGameState(const gameState* newState);
 
 // includes other game states to be able to switch them from within them
 #include "gameStates/gameStateRunning.h"

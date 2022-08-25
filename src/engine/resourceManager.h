@@ -15,7 +15,9 @@ typedef struct {
 
 void destroyResource(resource* res);
 
-resource* loadResource(RESOURCE_TYPE type, const char* filePath);
+resource* loadResource(RESOURCE_TYPE type, const char* filename);
+
+void setResourceDirectory(char* path);
 
 // destroys every loaded resource
 void clearResourceList();

@@ -58,7 +58,7 @@ struct entity* createPlayer(float x, float y, float w, float h){
 	
 	playerObj->jumpTimer = 0.0f;
 	
-	playerObj->animation->textureResource = loadResource(RES_TYPE_TEXTURE, "res/test.png");
+	playerObj->animation->textureResource = loadResource(RES_TYPE_TEXTURE, "test.png");
 	playerObj->animation->timer = 0.0f;
 	playerObj->animation->index = 0;
 	playerObj->animation->frames = idleAnimation;

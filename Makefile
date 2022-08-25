@@ -23,7 +23,6 @@ all: ${NAME} debug
 
 clean:
 	-rm -rf obj build
-	-rm ./${NAME}*
 
 # creates the directory for all the object files
 dirs:

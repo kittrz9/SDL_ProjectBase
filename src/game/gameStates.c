@@ -7,7 +7,7 @@ gameState* currentState = NULL;
 
 bool running = true;
 
-void initGameState(gameState* newState){
+void initGameState(const gameState* newState){
 	if(currentState != NULL) {
 		(*(currentState->uninitState))();
 	}

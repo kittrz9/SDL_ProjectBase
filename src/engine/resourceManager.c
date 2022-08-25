@@ -14,6 +14,16 @@ typedef struct {
 resourceListEntry* resourceList;
 unsigned int loadedResources = 0;
 
+char* resourceDirectory = NULL;
+unsigned int resDirStrLen = 0;
+
+void setResourceDirectory(char* path) {
+	resourceDirectory = malloc(strlen(path));
+	strcpy(resourceDirectory, path);
+	resDirStrLen = strlen(resourceDirectory);
+
+	return;
+}
 
 // loaded resource is freed from memory in the destroy resource function
 void destroyTexture(resource* res){
@@ -23,12 +33,17 @@ void destroyTexture(resource* res){
 }
 
 // resource is going to have the type assigned in the load resource function
-resource* loadTexture(const char* filePath){
+resource* loadTexture(const char* filename){
 	resource* res = malloc(sizeof(resource));
 	
-	SDL_Surface* tempSurface = IMG_Load(filePath);
+	char* fullResourcePath = malloc(resDirStrLen + strlen(filename));
+	sprintf(fullResourcePath, "%s%s", resourceDirectory, filename);
+
+	SDL_Surface* tempSurface = IMG_Load(fullResourcePath);
 	res->pointer = SDL_CreateTextureFromSurface(renderer, tempSurface);
 	SDL_FreeSurface(tempSurface);
+
+	free(fullResourcePath);
 	
 	if(res->pointer == NULL) { return NULL; }
 	
@@ -41,10 +56,14 @@ void destroyFont(resource* res){
 	return;
 }
 
-resource* loadFont(const char* filePath){
+resource* loadFont(const char* filename){
 	resource* res = malloc(sizeof(resource));
+
+	char* fullResourcePath = malloc(resDirStrLen + strlen(filename));
+	sprintf(fullResourcePath, "%s%s", resourceDirectory, filename);
 	
-	res->pointer = TTF_OpenFont("res/TerminusTTF-4.47.0.ttf", 24);
+	res->pointer = TTF_OpenFont(fullResourcePath, 24);
+	free(fullResourcePath);
 	if(res->pointer == NULL) { return NULL; }
 	
 	return res;
@@ -56,7 +75,7 @@ void (*resourceDestroyingFunctions[RES_TYPE_ENUM_LENGTH]) (resource* res) = {
 	destroyTexture,
 	destroyFont,
 };
-resource* (*resourceLoadingFunctions[RES_TYPE_ENUM_LENGTH]) (const char* filePath) = {
+resource* (*resourceLoadingFunctions[RES_TYPE_ENUM_LENGTH]) (const char* filename) = {
 	loadTexture,
 	loadFont,
 };
@@ -67,7 +86,7 @@ const char* typeStrings[RES_TYPE_ENUM_LENGTH] = {"texture", "font"};
 void destroyResource(resource* res) {
 	for(unsigned int i = 0; i < loadedResources; i++){
 		if(resourceList[i].resPointer == res){
-			printf("Destroying resource with type %s at %p\n", typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
+			printf("Destroying resource \"%s\"with type %s at %p\n", resourceList[i].name, typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
 			(resourceDestroyingFunctions[res->type])(res);
 			// to have empty entries in the resource list so you don't have to reallocate the array constantly
 			resourceList[i].resPointer = NULL;
@@ -83,23 +102,23 @@ void destroyResource(resource* res) {
 	return;
 }
 
-resource* loadResource(RESOURCE_TYPE type, const char* filePath){
+resource* loadResource(RESOURCE_TYPE type, const char* filename){
 	int resourceIndex = -1; // used for if an entry in the list can be overwritten
 	for(unsigned int i = 0; i < loadedResources; i++){
 		if(resourceList[i].resPointer == NULL){
 			resourceIndex = i;
 			continue;
 		}
-		if(strcmp(resourceList[i].name, filePath) == 0){
+		if(strcmp(resourceList[i].name, filename) == 0){
 			return resourceList[i].resPointer;
 		}
 	}
 	
-	resource* res = (*resourceLoadingFunctions[type])(filePath);
+	resource* res = (*resourceLoadingFunctions[type])(filename);
 	res->type = type;
 	
 	if(res->pointer == NULL) {
-		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not open resource with file path %s: %s\n", filePath, SDL_GetError());
+		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Could not open resource with file name %s: %s\n", filename, SDL_GetError());
 		return NULL;
 	}
 	
@@ -111,10 +130,10 @@ resource* loadResource(RESOURCE_TYPE type, const char* filePath){
 	}
 	
 	resourceList[resourceIndex].resPointer = res;
-	resourceList[resourceIndex].name = malloc(strlen(filePath) * sizeof(char));
-	strcpy(resourceList[resourceIndex].name, filePath);
+	resourceList[resourceIndex].name = malloc(strlen(filename) * sizeof(char));
+	strcpy(resourceList[resourceIndex].name, filename);
 	
-	printf("resource with type %s created at %p\n", typeStrings[type], (void*)res);
+	printf("resource \"%s\" with type %s created at %p\n", filename, typeStrings[type], (void*)res);
 	
 	return res;
 }
@@ -130,7 +149,7 @@ void clearResourceList(){
 			continue;
 		}
 		
-		printf("Destroying resource with type %s at %p\n", typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
+		printf("Destroying resource \"%s\" with type %s at %p\n", resourceList[i].name, typeStrings[resourceList[i].resPointer->type], (void*)resourceList[i].resPointer);
 		(resourceDestroyingFunctions[resourceList[i].resPointer->type])(resourceList[i].resPointer);
 		
 		free(resourceList[i].name);
