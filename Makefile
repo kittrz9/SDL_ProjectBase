@@ -8,12 +8,12 @@ SOURCES = ${wildcard src/game/*.c} ${wildcard src/engine/*.c} ${wildcard src/gam
 OBJS = ${subst src/, obj/, ${subst .c,.o,${SOURCES}}}
 
 # creates the main executable
-${NAME}: obj-dir ${OBJS}
-	${CC} ${CFLAGS} ${INCLUDE} ${LIBS} -o $@ ${OBJS}
+${NAME}: dirs ${OBJS}
+	${CC} ${CFLAGS} ${INCLUDE} ${LIBS} -o build/$@ ${OBJS}
 
 # creates an executable with debug symbols and stuff
 debug: ${SOURCES}
-	$(CC) $(CFLAGS) $(INCLUDE) -g $(SOURCES) $(LDFLAGS) -o ${NAME}-debug $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE) -g $(SOURCES) $(LDFLAGS) -o build/${NAME}-debug $(LIBS)
 
 # creates a windows executable from a linux host
 windows: ${SOURCES}
@@ -22,12 +22,12 @@ windows: ${SOURCES}
 all: ${NAME} debug
 
 clean:
-	-rm -rf obj
+	-rm -rf obj build
 	-rm ./${NAME}*
 
 # creates the directory for all the object files
-obj-dir:
-	mkdir -p obj/game/gameStates obj/engine
+dirs:
+	mkdir -p obj/game/gameStates obj/engine build
 
 # rule to make object files
 # https://stackoverflow.com/questions/14639794/getting-make-to-create-object-files-in-a-specific-directory
